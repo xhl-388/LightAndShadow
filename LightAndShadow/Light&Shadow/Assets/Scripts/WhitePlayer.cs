@@ -20,5 +20,12 @@ public class WhitePlayer : MonoBehaviour            //p1输入检测，动画处
     {
         move = Input.GetAxis("Horizontal");
         jump = Input.GetKey(KeyCode.W);
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            if (wCC.whiteSideCube)
+            {
+                wCC.whiteSideCube.ChangeColor();
+            }
+        }
     }
 }

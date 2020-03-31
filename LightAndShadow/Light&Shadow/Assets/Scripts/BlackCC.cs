@@ -6,25 +6,28 @@ public class BlackCC : MonoBehaviour            //影的角色控制器
 {
     private float jumpForce=300f;           
     public Transform groundCheck;           
-    const float groundCheckRadius = 0.1f;   
+    const float groundCheckRadius = 0.1f;  
+    [HideInInspector]
     public bool isGrounded;                 
     private bool facingRight = true;
     const float groundCheckBreak = 0.1f;
     private float nextGroundCheckTime;
     private Rigidbody2D rigidBody2D;
     private LayerMask ground;
+    private LayerMask cubeLayer;
     private void Awake()
     {
+        cubeLayer = 1<<LayerMask.NameToLayer("Cube");
         rigidBody2D = GetComponent<Rigidbody2D>();
-        ground = LayerMask.NameToLayer("Ground");
+        ground = 1<<LayerMask.NameToLayer("Ground");
     }
     private void FixedUpdate()              //检测是否着地
     {
         isGrounded = false;
         if (Time.time > nextGroundCheckTime)
         {
-            Collider2D collider = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius,1<<ground);
-            if (collider)
+            Collider2D collider = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius,ground|cubeLayer);
+            if (collider&&!collider.isTrigger)
             {
                 isGrounded = true;
             }

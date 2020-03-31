@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WhiteSideCube : MonoBehaviour              //光角色那边的方块脚本
+public class WhiteSideCube : MonoBehaviour,ColoredCube              //光角色那边的方块脚本
 {
     private bool isWhite;                               //颜色状态
     private Collider2D colli;
     private GameObject whiteP;
     private SpriteRenderer spriteRenderer;
     private GameController gameController;
+    public Mirror[] mirrors = new Mirror[2];
+    private int firstMirrorIndex;
     private void Start()
     {
+        firstMirrorIndex = GetFistMirrorIndex();
         colli = GetComponent<Collider2D>();
         whiteP = GameObject.FindWithTag("WhiteP");
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -23,17 +26,27 @@ public class WhiteSideCube : MonoBehaviour              //光角色那边的方�
             colli.isTrigger = true;
         }
     }
-    public void ChangeIntoWhite()               //颜色变为白色调用的方法
+    public void ChangeColor()
     {
-        isWhite = true;
-        spriteRenderer.sprite = gameController.whiteSprite;
-        colli.isTrigger = false;
+        Debug.Log("WhiteSideColorChanged");
+        if (isWhite)
+        {
+            isWhite = false;
+            spriteRenderer.sprite = gameController.blackSprite;
+            colli.isTrigger = true;
+        }
+        else
+        {
+            isWhite = true;
+            spriteRenderer.sprite = gameController.whiteSprite;
+            colli.isTrigger = false;
+        }
+        if(firstMirrorIndex!=-1)
+        mirrors[firstMirrorIndex].ChangeIdentically(this);
     }
-    public void ChangeIntoBlack()                   //颜色变为黑色调用的方法
+    public bool IsWhite()
     {
-        isWhite = false;
-        spriteRenderer.sprite = gameController.blackSprite;
-        colli.isTrigger = true;
+        return isWhite;
     }
     private void OnTriggerEnter2D(Collider2D collision)         //赋予光角色二段跳能力
     {
@@ -44,5 +57,68 @@ public class WhiteSideCube : MonoBehaviour              //光角色那边的方�
     {
         if (collision.gameObject == whiteP)
             whiteP.GetComponent<WhiteCC>().canJumpAgain = false;
+    }
+    private int GetFistMirrorIndex()
+    {
+        if (!mirrors[0])
+        {
+            return -1;
+        }
+        else if (!mirrors[1])
+        {
+            return 0;
+        }
+        else
+        {
+            if (mirrors[0].leftOrDownSideCubes.Contains(this)) {
+                if (mirrors[0].isHorizontal)
+                {
+                    if (mirrors[1].leftOrDownSideCubes.Contains(this))
+                    {
+                        return 1;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
+                else
+                {
+                    if (mirrors[1].leftOrDownSideCubes.Contains(this))
+                    {
+                        return 0;
+                    }
+                    else
+                    {
+                        return 1;
+                    }
+                }
+            }
+            else
+            {
+                if (mirrors[0].isHorizontal)
+                {
+                    if (mirrors[1].leftOrDownSideCubes.Contains(this))
+                    {
+                        return 0;
+                    }
+                    else
+                    {
+                        return 1;
+                    }
+                }
+                else
+                {
+                    if (mirrors[1].leftOrDownSideCubes.Contains(this))
+                    {
+                        return 1;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
+            }
+        }
     }
 }
