@@ -11,8 +11,11 @@ public class WhiteSideCube : MonoBehaviour,ColoredCube              //光角色�
     private GameController gameController;
     public Mirror[] mirrors = new Mirror[2];
     private int firstMirrorIndex;
+    private LayerMask playerLayer;
+    private bool hasChecked=false;
     private void Start()
     {
+        playerLayer = 1<<LayerMask.NameToLayer("Player");
         firstMirrorIndex = GetFistMirrorIndex();
         colli = GetComponent<Collider2D>();
         whiteP = GameObject.FindWithTag("WhiteP");
@@ -24,6 +27,44 @@ public class WhiteSideCube : MonoBehaviour,ColoredCube              //光角色�
         if (!isWhite)
         {
             colli.isTrigger = true;
+        }
+    }
+    public void ColorManage(int x)
+    {
+        if (x == 0)
+        {
+            if (firstMirrorIndex == -1)
+            {
+                ChangeColor();
+            }
+            else if (CanChange(mirrors[firstMirrorIndex]))
+            {
+                ChangeColor();
+                mirrors[firstMirrorIndex].ChangeIdentically(this);
+            }
+            else if (mirrors[1] && CanChange(mirrors[1 - firstMirrorIndex]))
+            {
+                ChangeColor();
+                mirrors[1 - firstMirrorIndex].ChangeIdentically(this);
+            }
+        }
+        else if (x == 1)
+        {
+            if (mirrors[1])
+            {
+                if (!hasChecked)
+                {
+                    if (CanChange(mirrors[1 - firstMirrorIndex]))
+                    {
+                        hasChecked = true;
+                        mirrors[1 - firstMirrorIndex].ChangeIdentically(this);
+                    }
+                }
+                else
+                {
+                    hasChecked = false;
+                }
+            }
         }
     }
     public void ChangeColor()
@@ -41,12 +82,14 @@ public class WhiteSideCube : MonoBehaviour,ColoredCube              //光角色�
             spriteRenderer.sprite = gameController.whiteSprite;
             colli.isTrigger = false;
         }
-        if(firstMirrorIndex!=-1)
-        mirrors[firstMirrorIndex].ChangeIdentically(this);
     }
     public bool IsWhite()
     {
         return isWhite;
+    }
+    public Vector2 GetPosition()
+    {
+        return new Vector2(this.transform.position.x, this.transform.position.y);
     }
     private void OnTriggerEnter2D(Collider2D collision)         //赋予光角色二段跳能力
     {
@@ -58,7 +101,30 @@ public class WhiteSideCube : MonoBehaviour,ColoredCube              //光角色�
         if (collision.gameObject == whiteP)
             whiteP.GetComponent<WhiteCC>().canJumpAgain = false;
     }
-    private int GetFistMirrorIndex()
+    private bool CanChange(Mirror mirror)           //判断物体关于mirror对称位置是否有玩家存在，若没有则返回可以变色
+    {
+       if (mirror.leftOrDownSideCubes.Contains(this))
+        {
+            ColoredCube cc = mirror.rightOrUpbSideCubes[mirror.leftOrDownSideCubes.IndexOf(this)];
+            Collider2D collider = Physics2D.OverlapBox(cc.GetPosition(), new Vector2(1f, 1f), 0f, playerLayer);
+            if (collider)
+            {
+               return false;
+            }
+              else return true;
+        }
+        else
+        {
+            ColoredCube cc = mirror.leftOrDownSideCubes[mirror.rightOrUpbSideCubes.IndexOf(this)];
+            Collider2D collider = Physics2D.OverlapBox(cc.GetPosition(), new Vector2(1f, 1f), 0f, playerLayer);
+            if (collider)
+            {
+                return false;
+            }
+            else return true;
+        }
+    }
+    private int GetFistMirrorIndex()            //获取最高优先级镜子的序号
     {
         if (!mirrors[0])
         {

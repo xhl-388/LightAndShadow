@@ -13,63 +13,104 @@ public class Mirror : MonoBehaviour            //同化镜
     {
         leftOrDownSideCubes = new List<ColoredCube>();
         rightOrUpbSideCubes = new List<ColoredCube>();
-        cubeLayer = LayerMask.NameToLayer("Cube");
+        cubeLayer =1<<LayerMask.NameToLayer("Cube");
         RaycastHit2D[] rayHit;
-        RaycastHit2D[] rayHit2;
         if (isHorizontal)
         {
-            rayHit = Physics2D.RaycastAll(transform.position, new Vector2(-1, 0), 20f, 1 << cubeLayer);
-            rayHit2 = Physics2D.RaycastAll(transform.position, new Vector2(1,0), 20f, 1 << cubeLayer);
+            rayHit = Physics2D.RaycastAll(transform.position, new Vector2(-1, 0), 20f, cubeLayer);
         }
         else
         {
-            rayHit = Physics2D.RaycastAll(transform.position, new Vector2(0,-1), 20f, 1 << cubeLayer);
-            rayHit2 = Physics2D.RaycastAll(transform.position, new Vector2(0,1), 20f, 1 << cubeLayer);
+            rayHit = Physics2D.RaycastAll(transform.position, new Vector2(0,-1), 20f,cubeLayer);
         }
         for(int i = 0; i < rayHit.Length; i++)
         {
             WhiteSideCube wsc = rayHit[i].collider.gameObject.GetComponent<WhiteSideCube>();
             BlackSideCube bsc = rayHit[i].collider.gameObject.GetComponent<BlackSideCube>();
-            if (wsc)
+            GreyCube gc = rayHit[i].collider.gameObject.GetComponent<GreyCube>();
+            Collider2D colli;
+            if (isHorizontal)
             {
-                leftOrDownSideCubes.Add(wsc);
-                if (wsc.mirrors[0])
-                {
-                    wsc.mirrors[1] = this;
-                }
-                else wsc.mirrors[0] = this;
+                colli = Physics2D.OverlapCircle(new Vector2(2 * this.transform.position.x - rayHit[i].transform.position.x, this.transform.position.y), 0.1f, cubeLayer);
             }
             else
             {
-                leftOrDownSideCubes.Add(bsc);
-                if (bsc.mirrors[0])
-                {
-                    bsc.mirrors[1] = this;
-                }
-                else bsc.mirrors[0] = this;
+                colli = Physics2D.OverlapCircle(new Vector2(this.transform.position.x,2*this.transform.position.y-rayHit[i].transform.position.y), 0.1f, cubeLayer);
             }
-        }
-        for (int i = 0; i < rayHit2.Length; i++)
-        {
-            WhiteSideCube wsc = rayHit2[i].collider.gameObject.GetComponent<WhiteSideCube>();
-            BlackSideCube bsc = rayHit2[i].collider.gameObject.GetComponent<BlackSideCube>();
-            if (wsc)
+            if (colli)
             {
-                rightOrUpbSideCubes.Add(wsc);
-                if (wsc.mirrors[0])
+                if (wsc)
                 {
-                    wsc.mirrors[1] = this;
+                    if (isHorizontal) {
+                        BlackSideCube bsc2 = colli.GetComponent<BlackSideCube>();
+                        rightOrUpbSideCubes.Add(bsc2);
+                        if (bsc2.mirrors[0])
+                        {
+                            bsc2.mirrors[1] = this;
+                        }
+                        else bsc2.mirrors[0] = this;
+                    }
+                    else { 
+                        WhiteSideCube wsc2 = colli.GetComponent<WhiteSideCube>();
+                        rightOrUpbSideCubes.Add(wsc2);
+                        if (wsc2.mirrors[0])
+                        {
+                            wsc2.mirrors[1] = this;
+                        }
+                        else wsc2.mirrors[0] = this;
+                    }
+                    leftOrDownSideCubes.Add(wsc);
+                    if (wsc.mirrors[0])
+                    {
+                        wsc.mirrors[1] = this;
+                    }
+                    else wsc.mirrors[0] = this;
                 }
-                else wsc.mirrors[0] = this;
-            }
-            else
-            {
-                rightOrUpbSideCubes.Add(bsc);
-                if (bsc.mirrors[0])
+                else if (bsc)
                 {
-                    bsc.mirrors[1] = this;
+                    if (isHorizontal)
+                    {
+                        WhiteSideCube wsc2 = colli.GetComponent<WhiteSideCube>();
+                        rightOrUpbSideCubes.Add(wsc2);
+                        if (wsc2.mirrors[0])
+                        {
+                            wsc2.mirrors[1] = this;
+                        }
+                        else wsc2.mirrors[0] = this;
+                    }
+                    else
+                    {
+                        BlackSideCube bsc2 = colli.GetComponent<BlackSideCube>();
+                        rightOrUpbSideCubes.Add(bsc2);
+                        if (bsc2.mirrors[0])
+                        {
+                            bsc2.mirrors[1] = this;
+                        }
+                        else bsc2.mirrors[0] = this;
+                    }
+                    leftOrDownSideCubes.Add(bsc);
+                    if (bsc.mirrors[0])
+                    {
+                        bsc.mirrors[1] = this;
+                    }
+                    else bsc.mirrors[0] = this;
                 }
-                else bsc.mirrors[0] = this;
+                else
+                {
+                    GreyCube gc2 = colli.GetComponent<GreyCube>();
+                    leftOrDownSideCubes.Add(gc);
+                    rightOrUpbSideCubes.Add(gc2);
+                    if (gc.mirrors[0])
+                    {
+                        gc.mirrors[1] = this;
+                    }
+                    else gc.mirrors[0] = this;
+                    if (gc2.mirrors[0])
+                    {
+                        gc2.mirrors[1] = this;
+                    }
+                    else gc2.mirrors[0] = this;
+                }
             }
         }
     }
@@ -78,31 +119,59 @@ public class Mirror : MonoBehaviour            //同化镜
         if (leftOrDownSideCubes.Contains(cCube))
         {
             ColoredCube cCubeOpposite = rightOrUpbSideCubes[leftOrDownSideCubes.IndexOf(cCube)];
-            if (cCube.IsWhite() == cCubeOpposite.IsWhite()&&isOpposite)
+            if (isOpposite)
             {
-                StartCoroutine(ChangeColorLater(cCubeOpposite));
+                if (cCube.IsWhite() == cCubeOpposite.IsWhite())
+                {
+                    StartCoroutine(ChangeColorLater(cCubeOpposite));
+                }
+                else
+                {
+                    cCube.ColorManage(1);
+                }
             }
-            else if (cCube.IsWhite() != cCubeOpposite.IsWhite() && !isOpposite)
+            else
             {
-                StartCoroutine(ChangeColorLater(cCubeOpposite));
+                if (cCube.IsWhite() != cCubeOpposite.IsWhite())
+                {
+                    StartCoroutine(ChangeColorLater(cCubeOpposite));
+                }
+                else
+                {
+                    cCube.ColorManage(1);
+                }
             }
         }
         else
         {
             ColoredCube cCubeOpposite = leftOrDownSideCubes[rightOrUpbSideCubes.IndexOf(cCube)];
-            if (cCube.IsWhite() == cCubeOpposite.IsWhite() && isOpposite)
+            if (isOpposite)
             {
-                StartCoroutine(ChangeColorLater(cCubeOpposite));
+                if (cCube.IsWhite() == cCubeOpposite.IsWhite())
+                {
+                    StartCoroutine(ChangeColorLater(cCubeOpposite));
+                }
+                else
+                {
+                    cCube.ColorManage(1);
+                }
             }
-            else if (cCube.IsWhite() != cCubeOpposite.IsWhite() && !isOpposite)
+            else
             {
-                StartCoroutine(ChangeColorLater(cCubeOpposite));
+                if (cCube.IsWhite() != cCubeOpposite.IsWhite())
+                {
+                    StartCoroutine(ChangeColorLater(cCubeOpposite));
+                }
+                else
+                {
+                    cCube.ColorManage(1);
+                }
             }
         }
     }
     IEnumerator ChangeColorLater(ColoredCube cCube)
     {
         yield return new WaitForSeconds(1f);
-        cCube.ChangeColor();
+        cCube.ColorManage(0);
     }
 }
