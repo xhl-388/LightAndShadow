@@ -16,12 +16,12 @@ public class WhitePlayer : MonoBehaviour            //p1输入检测，动画处
     }
     private void FixedUpdate()
     {
-        wCC.Move(move * speed, jump);
+        
     }
     private void Update()
     {
         move = Input.GetAxis("Horizontal");
-        jump = Input.GetKey(KeyCode.W);
+        jump = Input.GetKeyDown(KeyCode.W);
         if (Input.GetKeyDown(KeyCode.S))
         {
             if (wCC.whiteSideCube&&rig.velocity.y==0)
@@ -29,5 +29,6 @@ public class WhitePlayer : MonoBehaviour            //p1输入检测，动画处
                 wCC.whiteSideCube.ColorManage(0);
             }
         }
+        wCC.Move(move * speed, jump);
     }
 }

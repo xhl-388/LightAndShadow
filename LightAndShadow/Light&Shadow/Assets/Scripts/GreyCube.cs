@@ -92,7 +92,7 @@ public class GreyCube : MonoBehaviour,ColoredCube  //通用灰色脚本
         if (mirror.leftOrDownSideCubes.Contains(this))
         {
             ColoredCube cc = mirror.rightOrUpbSideCubes[mirror.leftOrDownSideCubes.IndexOf(this)];
-            Collider2D collider = Physics2D.OverlapBox(cc.GetPosition(), new Vector2(1f, 1f), 0f, playerLayer);
+            Collider2D collider = Physics2D.OverlapBox(cc.GetPosition(), new Vector2(0.8f, 0.8f), 0f, playerLayer);
             if (collider)
             {
                 return false;
@@ -102,7 +102,7 @@ public class GreyCube : MonoBehaviour,ColoredCube  //通用灰色脚本
         else
         {
             ColoredCube cc = mirror.leftOrDownSideCubes[mirror.rightOrUpbSideCubes.IndexOf(this)];
-            Collider2D collider = Physics2D.OverlapBox(cc.GetPosition(), new Vector2(1f, 1f), 0f, playerLayer);
+            Collider2D collider = Physics2D.OverlapBox(cc.GetPosition(), new Vector2(0.8f, 0.8f), 0f, playerLayer);
             if (collider)
             {
                 return false;

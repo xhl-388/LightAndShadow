@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BlackCC : MonoBehaviour            //影的角色控制器
 {
-    private float jumpForce=300f;           
+    private float jumpForce=500f;           
     public Transform groundCheck;           
     const float groundCheckRadius = 0.1f;  
     [HideInInspector]
@@ -27,7 +27,7 @@ public class BlackCC : MonoBehaviour            //影的角色控制器
         if (Time.time > nextGroundCheckTime)
         {
             Collider2D collider = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius,ground|cubeLayer);
-            if (collider&&!collider.isTrigger)
+            if (collider&&!collider.isTrigger&&Mathf.Abs(rigidBody2D.velocity.y)<0.1f)
             {
                 isGrounded = true;
             }
