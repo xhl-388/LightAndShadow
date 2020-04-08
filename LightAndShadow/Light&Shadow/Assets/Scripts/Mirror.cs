@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Mirror : MonoBehaviour            //同化镜
 {
+    public float timeBeforeReflect = 1f;
     public bool isHorizontal = true;
     public bool isOpposite = true;
     public List<ColoredCube> leftOrDownSideCubes;
@@ -14,6 +15,10 @@ public class Mirror : MonoBehaviour            //同化镜
         leftOrDownSideCubes = new List<ColoredCube>();
         rightOrUpbSideCubes = new List<ColoredCube>();
         cubeLayer =1<<LayerMask.NameToLayer("Cube");
+        SearchCube();
+    }
+    public void SearchCube()
+    {
         RaycastHit2D[] rayHit;
         if (isHorizontal)
         {
@@ -21,9 +26,9 @@ public class Mirror : MonoBehaviour            //同化镜
         }
         else
         {
-            rayHit = Physics2D.RaycastAll(transform.position, new Vector2(0,-1), 20f,cubeLayer);
+            rayHit = Physics2D.RaycastAll(transform.position, new Vector2(0, -1), 20f, cubeLayer);
         }
-        for(int i = 0; i < rayHit.Length; i++)
+        for (int i = 0; i < rayHit.Length; i++)
         {
             WhiteSideCube wsc = rayHit[i].collider.gameObject.GetComponent<WhiteSideCube>();
             BlackSideCube bsc = rayHit[i].collider.gameObject.GetComponent<BlackSideCube>();
@@ -35,13 +40,14 @@ public class Mirror : MonoBehaviour            //同化镜
             }
             else
             {
-                colli = Physics2D.OverlapCircle(new Vector2(this.transform.position.x,2*this.transform.position.y-rayHit[i].transform.position.y), 0.1f, cubeLayer);
+                colli = Physics2D.OverlapCircle(new Vector2(this.transform.position.x, 2 * this.transform.position.y - rayHit[i].transform.position.y), 0.1f, cubeLayer);
             }
             if (colli)
             {
                 if (wsc)
                 {
-                    if (isHorizontal) {
+                    if (isHorizontal)
+                    {
                         BlackSideCube bsc2 = colli.GetComponent<BlackSideCube>();
                         rightOrUpbSideCubes.Add(bsc2);
                         if (bsc2.mirrors[0])
@@ -50,7 +56,8 @@ public class Mirror : MonoBehaviour            //同化镜
                         }
                         else bsc2.mirrors[0] = this;
                     }
-                    else { 
+                    else
+                    {
                         WhiteSideCube wsc2 = colli.GetComponent<WhiteSideCube>();
                         rightOrUpbSideCubes.Add(wsc2);
                         if (wsc2.mirrors[0])
@@ -171,7 +178,7 @@ public class Mirror : MonoBehaviour            //同化镜
     }
     IEnumerator ChangeColorLater(ColoredCube cCube)
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(timeBeforeReflect);
         cCube.ColorManage(0);
     }
 }

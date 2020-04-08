@@ -13,17 +13,20 @@ public class WhiteSideCube : MonoBehaviour,ColoredCube              //光角色�
     private int firstMirrorIndex;
     private LayerMask playerLayer;
     private bool hasChecked=false;
-    private void Start()
+    private void Awake()
     {
-        playerLayer = 1<<LayerMask.NameToLayer("Player");
-        firstMirrorIndex = GetFistMirrorIndex();
         colli = GetComponent<Collider2D>();
-        whiteP = GameObject.FindWithTag("WhiteP");
         spriteRenderer = GetComponent<SpriteRenderer>();
         gameController = GameObject.FindWithTag("GameControllerTag").GetComponent<GameController>();
         if (spriteRenderer.sprite == gameController.whiteSprite)            //初始化颜色状态
             isWhite = true;
         else isWhite = false;
+    }
+    private void Start()
+    {
+        playerLayer = 1<<LayerMask.NameToLayer("Player");
+        firstMirrorIndex = GetFistMirrorIndex();
+        whiteP = GameObject.FindWithTag("WhiteP");
         if (!isWhite)
         {
             colli.isTrigger = true;
@@ -69,7 +72,7 @@ public class WhiteSideCube : MonoBehaviour,ColoredCube              //光角色�
     }
     public void ChangeColor()
     {
-        Debug.Log("WhiteSideColorChanged");
+        Debug.Log("WhiteSideColorChanged"+this.gameObject.name);
         if (isWhite)
         {
             isWhite = false;

@@ -15,6 +15,8 @@ public class BlackCC : MonoBehaviour            //影的角色控制器
     private Rigidbody2D rigidBody2D;
     private LayerMask ground;
     private LayerMask cubeLayer;
+    [HideInInspector]
+    public bool cantControl = false;
     private void Awake()
     {
         cubeLayer = 1<<LayerMask.NameToLayer("Cube");
@@ -40,6 +42,10 @@ public class BlackCC : MonoBehaviour            //影的角色控制器
     }
     public void Move(float move, bool jump)     //角色移动处理
     {
+        if (cantControl)
+        {
+            return;
+        }
         rigidBody2D.velocity = new Vector2(move, rigidBody2D.velocity.y);
         if (move > 0 && !facingRight)
         {

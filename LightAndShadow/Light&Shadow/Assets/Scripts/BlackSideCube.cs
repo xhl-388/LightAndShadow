@@ -10,22 +10,27 @@ public class BlackSideCube : MonoBehaviour,ColoredCube              //影角色�
     private SpriteRenderer spriteRenderer;
     private GameController gameController;
     private GameObject blackP;
+    private BlackPlayer blackPlayer;
     public Mirror[] mirrors = new Mirror[2];
     private int firstMirrorIndex;
     private LayerMask playerLayer;
     private bool hasChecked = false;
-    private void Start()
+    private void Awake()
     {
-        playerLayer = 1 << LayerMask.NameToLayer("Player");
-        firstMirrorIndex = GetFistMirrorIndex();
         boxColli = GetComponent<BoxCollider2D>();
         capColli = GetComponent<CapsuleCollider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         gameController = GameObject.FindWithTag("GameControllerTag").GetComponent<GameController>();
-        blackP = GameObject.FindWithTag("BlackP");
         if (spriteRenderer.sprite == gameController.whiteSprite)
             isWhite = true;
         else isWhite = false;
+    }
+    private void Start()
+    {
+        playerLayer = 1 << LayerMask.NameToLayer("Player");
+        firstMirrorIndex = GetFistMirrorIndex();
+        blackP = GameObject.FindWithTag("BlackP");
+        blackPlayer = blackP.GetComponent<BlackPlayer>();
         if (isWhite)
         {
             boxColli.enabled = false;
@@ -71,7 +76,7 @@ public class BlackSideCube : MonoBehaviour,ColoredCube              //影角色�
     }
     public void ChangeColor()
     {
-        Debug.Log("BlackSideColorChanged");
+        Debug.Log("BlackSideColorChanged"+this.gameObject.name);
         if (isWhite)
         {
             isWhite = false;
@@ -118,8 +123,8 @@ public class BlackSideCube : MonoBehaviour,ColoredCube              //影角色�
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (isWhite && collision.gameObject == blackP && blackP.GetComponent<BlackPlayer>().isSuperMode)
-            boxColli.enabled = true ;
+        if (isWhite && collision.gameObject == blackP &&collision==blackP.GetComponent<CircleCollider2D>()&& blackPlayer.isSuperMode&&blackP.GetComponent<Rigidbody2D>().velocity.y>0)
+           boxColli.enabled = true ;
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -128,9 +133,15 @@ public class BlackSideCube : MonoBehaviour,ColoredCube              //影角色�
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (isWhite)
+        if (isWhite&&blackPlayer.isSuperMode)
         {
             ColorManage(0);
+            blackPlayer.isSuperMode = false;
+        }
+        else if (blackPlayer.isSuperMode)
+        {
+            ColorManage(0);
+            blackPlayer.isSuperMode = false;
         }
     }
     private int GetFistMirrorIndex()

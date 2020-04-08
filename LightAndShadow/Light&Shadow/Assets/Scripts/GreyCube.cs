@@ -12,17 +12,33 @@ public class GreyCube : MonoBehaviour,ColoredCube  //通用灰色脚本
     private int firstMirrorIndex;
     private LayerMask playerLayer;
     private bool hasChecked = false;
-    private void Start()
+    private BlackPlayer blackP;
+    private void Awake()
     {
-        playerLayer = 1 << LayerMask.NameToLayer("Player");
-        firstMirrorIndex = GetFistMirrorIndex();
-        colli = GetComponent<Collider2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        isExist = initExist;
         if (!initExist)
         {
             colli.enabled = false;
             spriteRenderer.enabled = false;
+        }
+        isExist = initExist;
+    }
+    private void Start()
+    {
+        playerLayer = 1 << LayerMask.NameToLayer("Player");
+        blackP = GameObject.FindWithTag("BlackP").GetComponent<BlackPlayer>();
+        firstMirrorIndex = GetFistMirrorIndex();
+        colli = GetComponent<Collider2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("BlackP")&&blackP.isSuperMode)
+        {
+            if(Physics2D.OverlapBox(new Vector2(this.transform.position.x,this.transform.position.y-0.6f),new Vector2(0.8f, 0.2f), 0, playerLayer))
+            {
+                ColorManage(0);
+                blackP.isSuperMode = false;
+            }
         }
     }
     public void ColorManage(int x)

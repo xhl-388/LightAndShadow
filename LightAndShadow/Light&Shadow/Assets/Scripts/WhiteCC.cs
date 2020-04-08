@@ -10,7 +10,6 @@ public class WhiteCC : MonoBehaviour            //光的角色控制器
     [HideInInspector]
     public bool isGrounded;
     private bool facingRight = true;
-    const float groundCheckBreak = 0.1f;
     private Rigidbody2D rigidBody2D;
     private LayerMask ground;
     private LayerMask cubeLayer;
@@ -20,6 +19,8 @@ public class WhiteCC : MonoBehaviour            //光的角色控制器
     private bool ableToBeJumpAgain;
     [HideInInspector]
     public WhiteSideCube whiteSideCube;
+    [HideInInspector]
+    public bool cantControl = false;
     private void Awake()
     {
         cubeLayer = 1<<LayerMask.NameToLayer("Cube");
@@ -55,6 +56,10 @@ public class WhiteCC : MonoBehaviour            //光的角色控制器
     }
     public void Move(float move, bool jump)
     {
+        if (cantControl)
+        {
+            return;
+        }
         rigidBody2D.velocity = new Vector2(move, rigidBody2D.velocity.y);
         if (move > 0 && !facingRight)
         {

@@ -12,12 +12,5 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
 {
     public Sprite whiteSprite;
     public Sprite blackSprite;
-    public GameObject gobj;
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            gobj.GetComponent<GreyCube>().ColorManage(0);
-        }
-    }
+    public Sprite greySprite;
 }
