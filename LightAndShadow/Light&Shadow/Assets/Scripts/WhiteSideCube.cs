@@ -13,8 +13,10 @@ public class WhiteSideCube : MonoBehaviour,ColoredCube              //光角色�
     private int firstMirrorIndex;
     private LayerMask playerLayer;
     private bool hasChecked=false;
+    private bool isPlunger = false;
     private void Awake()
     {
+        if (GetComponent<Plunger>()) isPlunger = true;
         colli = GetComponent<Collider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         gameController = GameObject.FindWithTag("GameControllerTag").GetComponent<GameController>();
@@ -73,6 +75,10 @@ public class WhiteSideCube : MonoBehaviour,ColoredCube              //光角色�
     public void ChangeColor()
     {
         Debug.Log("WhiteSideColorChanged"+this.gameObject.name);
+        if (isPlunger)
+        {
+            GetComponent<Plunger>().PullAndPush();
+        }
         if (isWhite)
         {
             isWhite = false;
@@ -85,6 +91,9 @@ public class WhiteSideCube : MonoBehaviour,ColoredCube              //光角色�
             spriteRenderer.sprite = gameController.whiteSprite;
             colli.isTrigger = false;
         }
+        gameController.TellMirror(this);
+        gameController.TellMultiColorCube(gameObject);
+        gameController.TellPlunger(gameObject);
     }
     public bool IsWhite()
     {

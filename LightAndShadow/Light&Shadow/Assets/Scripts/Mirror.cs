@@ -17,6 +17,13 @@ public class Mirror : MonoBehaviour            //同化镜
         cubeLayer =1<<LayerMask.NameToLayer("Cube");
         SearchCube();
     }
+    public void SearchCube(ColoredCube cube)
+    {
+        if (leftOrDownSideCubes.Contains(cube) || rightOrUpbSideCubes.Contains(cube))
+        {
+            SearchCube();
+        }
+    }
     public void SearchCube()
     {
         RaycastHit2D[] rayHit;

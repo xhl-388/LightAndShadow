@@ -7,6 +7,9 @@ TagManager:
   - BlackP
   - WhiteP
   - GameControllerTag
+  - Mirror
+  - MultiColorCube
+  - Plunger
   layers:
   - Default
   - TransparentFX
@@ -19,7 +22,7 @@ TagManager:
   - Ground
   - Cube
   - Player
-  - 
+  - Mirror
   - 
   - 
   - 

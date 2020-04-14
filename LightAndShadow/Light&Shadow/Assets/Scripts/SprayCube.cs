@@ -4,99 +4,47 @@ using UnityEngine;
 
 public class SprayCube : MonoBehaviour
 {
-    [Tooltip("0 for right;1 for up;2 for left;3 for down")]     //之后通过scale直接判断方向（现在没素材，不好决定）
-    public int direction=0;
     private float sprayForce=1000f;                             //弹跳力
-    private BlackCC blackCC;
-    private WhiteCC whiteCC;
+    private LayerMask playerLayer;
+    private WhiteCC wcc;
+    private BlackCC bcc;
     private void Start()
     {
-        blackCC = GameObject.FindWithTag("BlackP").GetComponent<BlackCC>();
-        whiteCC = GameObject.FindWithTag("WhiteP").GetComponent<WhiteCC>();
+        playerLayer = 1<<LayerMask.NameToLayer("Player");
+        wcc = GameObject.FindWithTag("WhiteP").GetComponent<WhiteCC>();
+        bcc = GameObject.FindWithTag("BlackP").GetComponent<BlackCC>();
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Collider2D collider = Physics2D.OverlapBox(new Vector2(transform.position.x, transform.position.y + 0.6f), new Vector2(0.9f,0.1f),0f, playerLayer);
+        if (collider)
+        {
+            if (collider.gameObject.CompareTag("WhiteP"))
+            {
+                if (!wcc.cantShoot) {
+                    collision.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, sprayForce));
+                    wcc.cantShoot = true;
+                    StartCoroutine(Cure(wcc.gameObject));
+                }
+            }
+            else
+            {
+                if (!bcc.cantShoot)
+                {
+                    collision.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, sprayForce));
+                    bcc.cantShoot = true;
+                    StartCoroutine(Cure(bcc.gameObject));
+                }
+            }
+        }
     }
     IEnumerator Cure(GameObject obj)
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.2f);
         if (obj.GetComponent<WhiteCC>())
         {
-            whiteCC.cantControl = false;
+            wcc.cantShoot = false;
         }
-        else blackCC.cantControl = false;
-    }
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        Debug.Log("Ok");
-        if (collision.gameObject.CompareTag("WhiteP"))
-        {
-            Rigidbody2D rig= collision.gameObject.GetComponent<Rigidbody2D>();
-            if (direction == 0)
-            {
-                if (Input.GetKey(KeyCode.A))
-                {
-                    rig.AddForce(new Vector2(sprayForce, 0));
-                    whiteCC.cantControl = true;
-                    StartCoroutine(Cure(whiteCC.gameObject));
-                }
-            }
-            else if (direction == 1)
-            {
-                if (Input.GetKey(KeyCode.S))
-                {
-                    rig.AddForce(new Vector2(0, sprayForce));
-                }
-            }
-            else if (direction == 2)
-            {
-                if (Input.GetKey(KeyCode.D))
-                {
-                    rig.AddForce(new Vector2(-sprayForce, 0));
-                    whiteCC.cantControl = true;
-                    StartCoroutine(Cure(whiteCC.gameObject));
-                }
-            }
-            else
-            {
-                if (Input.GetKey(KeyCode.W))
-                {
-                    rig.AddForce(new Vector2(0, -sprayForce));
-                }
-            }
-        }
-        else
-        {
-            Rigidbody2D rig = collision.gameObject.GetComponent<Rigidbody2D>();
-            if (direction == 0)
-            {
-                if (Input.GetKey(KeyCode.LeftArrow))
-                {
-                    rig.AddForce(new Vector2(sprayForce, 0));
-                    blackCC.cantControl = true;
-                    StartCoroutine(Cure(blackCC.gameObject));
-                }
-            }
-            else if (direction == 1)
-            {
-                if (Input.GetKey(KeyCode.DownArrow))
-                {
-                    rig.AddForce(new Vector2(0, sprayForce));
-                }
-            }
-            else if (direction == 2)
-            {
-                if (Input.GetKey(KeyCode.RightArrow))
-                {
-                    rig.AddForce(new Vector2(-sprayForce, 0));
-                    blackCC.cantControl = true;
-                    StartCoroutine(Cure(blackCC.gameObject));
-                }
-            }
-            else
-            {
-                if (Input.GetKey(KeyCode.UpArrow))
-                {
-                    rig.AddForce(new Vector2(0, -sprayForce));
-                }
-            }
-        }
+        else bcc.cantShoot = false;
     }
 }

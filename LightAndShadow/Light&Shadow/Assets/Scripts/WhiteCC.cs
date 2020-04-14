@@ -14,13 +14,13 @@ public class WhiteCC : MonoBehaviour            //光的角色控制器
     private LayerMask ground;
     private LayerMask cubeLayer;
     [HideInInspector]
-    public bool canJumpAgain = false;       //满足二段跳条件
-    private float jumpAgainForce=300f;           //二段跳力量
+    public bool canJumpAgain = false;           //满足二段跳条件
+    private float jumpAgainForce=400f;           //二段跳力量
     private bool ableToBeJumpAgain;
     [HideInInspector]
     public WhiteSideCube whiteSideCube;
-    [HideInInspector]
-    public bool cantControl = false;
+    //[HideInInspector]
+    public bool cantShoot = false;
     private void Awake()
     {
         cubeLayer = 1<<LayerMask.NameToLayer("Cube");
@@ -29,25 +29,48 @@ public class WhiteCC : MonoBehaviour            //光的角色控制器
     }
     private void FixedUpdate()
     {
-        Collider2D collider = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius,ground|cubeLayer);
-        if (collider)
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.position, groundCheckRadius,ground|cubeLayer);
+        if (colliders.Length!= 0&&Mathf.Abs(rigidBody2D.velocity.y) < 0.1f)
         {
-             if (!collider.isTrigger&&Mathf.Abs(rigidBody2D.velocity.y)<0.1f)
-             {
+            int flag = 0;
+            for(int i = 0; i < colliders.Length; i++)
+            {
+                if (!colliders[i].isTrigger)
+                {
+                    flag = 1;
+                    break;
+                }
+            }
+            if (flag == 1)
+            {
                 isGrounded = true;
                 canJumpAgain = false;
                 ableToBeJumpAgain = true;
-             }
-            if (collider.GetComponent<WhiteSideCube>())
-            {if(collider.GetComponent<WhiteSideCube>().IsWhite())
-                whiteSideCube = collider.GetComponent<WhiteSideCube>();
             }
+            else isGrounded = false;
         }
         else
         {
-            whiteSideCube = null;
             isGrounded = false;
         }
+        if (isGrounded)
+        {
+            Collider2D collider2 = Physics2D.OverlapCircle(new Vector2(transform.position.x, transform.position.y - 1f), 0.1f, cubeLayer);
+            if (collider2)
+            {
+                if (collider2.GetComponent<WhiteSideCube>())
+                {
+                    if (collider2.GetComponent<WhiteSideCube>().IsWhite())
+                    {
+                        whiteSideCube = collider2.GetComponent<WhiteSideCube>();
+                    }
+                    else whiteSideCube = null;
+                }
+                else whiteSideCube = null;
+            }
+            else whiteSideCube = null;
+        }
+        else whiteSideCube = null;
     }
     private void Flip()
     {
@@ -56,10 +79,6 @@ public class WhiteCC : MonoBehaviour            //光的角色控制器
     }
     public void Move(float move, bool jump)
     {
-        if (cantControl)
-        {
-            return;
-        }
         rigidBody2D.velocity = new Vector2(move, rigidBody2D.velocity.y);
         if (move > 0 && !facingRight)
         {

@@ -13,4 +13,42 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
     public Sprite whiteSprite;
     public Sprite blackSprite;
     public Sprite greySprite;
+    private GameObject[] mirrors;
+    private GameObject[] multis;
+    private GameObject[] plungers;
+    private void Start()
+    {
+        mirrors = GameObject.FindGameObjectsWithTag("Mirror");
+        multis = GameObject.FindGameObjectsWithTag("MultiColorCube");
+        plungers = GameObject.FindGameObjectsWithTag("Plunger");
+    }
+    public void TellMirror(ColoredCube cube)
+    {
+        for(int i = 0; i < mirrors.Length; i++)
+        {
+            mirrors[i].GetComponent<Mirror>().SearchCube(cube);
+        }
+    }
+    public void TellMultiColorCube(GameObject obj)
+    {
+        for(int i = 0; i < multis.Length; i++)
+        {
+            multis[i].GetComponent<MultiColorCube>().SearchCubesNearby(obj);
+        }
+    }
+    public void TellPlunger(GameObject obj)
+    {
+        for (int i = 0; i < plungers.Length; i++)
+        {
+            plungers[i].GetComponent<Plunger>().SearchCubes(obj);
+        }
+    }
+    public void TellPlunger(GameObject obj,GameObject plungerExcepted)
+    {
+        for (int i = 0; i < plungers.Length; i++)
+        {
+            if(plungers[i]!=plungerExcepted)
+            plungers[i].GetComponent<Plunger>().SearchCubes(obj);
+        }
+    }
 }

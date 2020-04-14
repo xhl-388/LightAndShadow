@@ -9,15 +9,23 @@ public class MultiColorCube : MonoBehaviour
     private GameController gameController;
     private SpriteRenderer spriteRenderer;
     private Collider2D colli;
+    private List<GameObject> cubesNearby = new List<GameObject>();
     private void Start()
     {
         cubeLayer = 1<<LayerMask.NameToLayer("Cube");
         gameController = GameObject.FindWithTag("GameControllerTag").GetComponent<GameController>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         colli = GetComponent<Collider2D>();
-        GetColorByOthers();
+        SearchCubesNearby();
     }
-    public void GetColorByOthers()
+    public void SearchCubesNearby(GameObject obj)
+    {
+        if (cubesNearby.Contains(obj))
+        {
+            SearchCubesNearby();
+        }
+    }
+    public void SearchCubesNearby()
     {
         int greyCount = 0;
         int blackCount = 0;
@@ -27,6 +35,7 @@ public class MultiColorCube : MonoBehaviour
         {
             if (colliders[i].gameObject != this.gameObject)
             {
+                cubesNearby.Add(colliders[i].gameObject);
                 if (colliders[i].gameObject.GetComponent<GreyCube>())
                 {
                     greyCount++;
@@ -50,9 +59,12 @@ public class MultiColorCube : MonoBehaviour
                     blackCount++;
                 }
             }
+            if (colliders[i].gameObject.GetComponent<SprayCube>())
+            {
+                colliders[i].gameObject.GetComponent<SprayCube>().enabled = false;
+            }
         }
         int countAll = colliders.Length;
-        Debug.Log(countAll);
         if (greyCount >= 0.5f * countAll)
         {
             ChangeColor(0);
@@ -60,10 +72,65 @@ public class MultiColorCube : MonoBehaviour
         else if (blackCount > whiteCount)
         {
             ChangeColor(-1);
+            if (whiteCount == 0)
+            {
+                for(int i = 0; i < colliders.Length; i++)
+                {
+                    if (isOnWhiteSide) {
+                        if (colliders[i].gameObject.GetComponent<WhiteSideCube>())
+                        {
+                            if (colliders[i].gameObject.GetComponent<SprayCube>())
+                            {
+                                colliders[i].gameObject.GetComponent<SprayCube>().enabled = true;
+                            }
+                            else colliders[i].gameObject.AddComponent<SprayCube>();
+                        }
+                    }
+                    else
+                    {
+                        if (colliders[i].gameObject.GetComponent<BlackSideCube>())
+                        {
+                            if (colliders[i].gameObject.GetComponent<SprayCube>())
+                            {
+                                colliders[i].gameObject.GetComponent<SprayCube>().enabled = true;
+                            }
+                            else colliders[i].gameObject.AddComponent<SprayCube>();
+                        }
+                    }
+                }
+            }
         }
         else if (blackCount < whiteCount)
         {
             ChangeColor(1);
+            if (blackCount == 0)
+            {
+                for (int i = 0; i < colliders.Length; i++)
+                {
+                    if (isOnWhiteSide)
+                    {
+                        if (colliders[i].gameObject.GetComponent<WhiteSideCube>())
+                        {
+                            if (colliders[i].gameObject.GetComponent<SprayCube>())
+                            {
+                                colliders[i].gameObject.GetComponent<SprayCube>().enabled = true;
+                            }
+                            else colliders[i].gameObject.AddComponent<SprayCube>();
+                        }
+                    }
+                    else
+                    {
+                        if (colliders[i].gameObject.GetComponent<BlackSideCube>())
+                        {
+                            if (colliders[i].gameObject.GetComponent<SprayCube>())
+                            {
+                                colliders[i].gameObject.GetComponent<SprayCube>().enabled = true;
+                            }
+                            else colliders[i].gameObject.AddComponent<SprayCube>();
+                        }
+                    }
+                }
+            }
         }
         else ChangeColor(0);
     }
