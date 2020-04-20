@@ -13,8 +13,12 @@ public class GreyCube : MonoBehaviour,ColoredCube  //通用灰色脚本
     private LayerMask playerLayer;
     private bool hasChecked = false;
     private BlackPlayer blackP;
+    private GameController gameController;
     private void Awake()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        gameController = GameObject.FindWithTag("GameControllerTag").GetComponent<GameController>();
+        spriteRenderer.sprite = gameController.greySprite[Random.Range(0, 3)];
         if (!initExist)
         {
             colli.enabled = false;
@@ -28,7 +32,6 @@ public class GreyCube : MonoBehaviour,ColoredCube  //通用灰色脚本
         blackP = GameObject.FindWithTag("BlackP").GetComponent<BlackPlayer>();
         firstMirrorIndex = GetFistMirrorIndex();
         colli = GetComponent<Collider2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {

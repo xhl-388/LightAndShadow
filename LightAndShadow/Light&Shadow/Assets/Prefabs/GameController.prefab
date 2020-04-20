@@ -43,6 +43,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6554140c26f4df44e971e957e98e9b3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  whiteSprite: {fileID: 21300000, guid: a5e586899798ece41b2dbcc326794ecd, type: 3}
-  blackSprite: {fileID: 21300000, guid: 87f7e4f13ae957948a2b7c3c408b183a, type: 3}
-  greySprite: {fileID: 21300000, guid: 3a575a2c253491547ad6c4016397a0e9, type: 3}
+  whiteSprite: {fileID: 21300000, guid: 7170029bda9a73d4fb0c4c2a3e1b0a18, type: 3}
+  blackSprite: {fileID: 21300000, guid: 687624f5293195d4d85003575e2ac7bc, type: 3}
+  greySprite:
+  - {fileID: 21300000, guid: d8c698106a7aa0445aa69f5a87d553d6, type: 3}
+  - {fileID: 21300000, guid: d13a80275d8412040ba0035dd2242476, type: 3}
+  - {fileID: 21300000, guid: 82e1bdd0fb9e09549ba064eaef1d1fb8, type: 3}

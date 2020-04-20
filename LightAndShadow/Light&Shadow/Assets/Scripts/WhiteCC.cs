@@ -9,7 +9,7 @@ public class WhiteCC : MonoBehaviour            //光的角色控制器
     const float groundCheckRadius = 0.1f;
     [HideInInspector]
     public bool isGrounded;
-    private bool facingRight = true;
+    private bool facingRight =false;
     private Rigidbody2D rigidBody2D;
     private LayerMask ground;
     private LayerMask cubeLayer;

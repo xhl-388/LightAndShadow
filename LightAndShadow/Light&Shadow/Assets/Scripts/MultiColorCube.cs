@@ -139,7 +139,8 @@ public class MultiColorCube : MonoBehaviour
         if (x == 0)
         {
             colli.enabled = true;
-            spriteRenderer.sprite = gameController.greySprite;
+            int n = Random.Range(0, 3);
+            spriteRenderer.sprite = gameController.greySprite[n];
         }
         else if (x == -1)
         {

@@ -12,15 +12,43 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
 {
     public Sprite whiteSprite;
     public Sprite blackSprite;
-    public Sprite greySprite;
+    public Sprite[] greySprite=new Sprite[3];
     private GameObject[] mirrors;
     private GameObject[] multis;
     private GameObject[] plungers;
+    private GameObject blackP;
+    private GameObject whiteP;
+    [HideInInspector]
+    public bool blackIsOnPlace=false;
+    [HideInInspector]
+    public bool whiteIsOnPlace=false;
+    private bool hasSucceed = false;
     private void Start()
     {
         mirrors = GameObject.FindGameObjectsWithTag("Mirror");
         multis = GameObject.FindGameObjectsWithTag("MultiColorCube");
         plungers = GameObject.FindGameObjectsWithTag("Plunger");
+        blackP = GameObject.FindWithTag("BlackP");
+        whiteP = GameObject.FindWithTag("WhiteP");
+    }
+    private void Update()
+    {
+        if (!hasSucceed)
+        {
+            if (blackIsOnPlace && whiteIsOnPlace)
+            {
+                hasSucceed = true;
+                Succeed();
+            }
+        }
+    }
+    private void Succeed()
+    {
+        blackP.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
+        whiteP.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
+        blackP.GetComponent<BlackPlayer>().cantControl = true;
+        whiteP.GetComponent<WhitePlayer>().cantControl = true;
+        Debug.Log("Succeed");
     }
     public void TellMirror(ColoredCube cube)
     {
