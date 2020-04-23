@@ -15,7 +15,7 @@ public class WhiteCC : MonoBehaviour            //光的角色控制器
     private LayerMask cubeLayer;
     [HideInInspector]
     public bool canJumpAgain = false;           //满足二段跳条件
-    private float jumpAgainForce=400f;           //二段跳力量
+    private float jumpAgainForce=450f;           //二段跳力量
     private bool ableToBeJumpAgain;
     [HideInInspector]
     public WhiteSideCube whiteSideCube;

@@ -5,7 +5,7 @@ using UnityEngine;
 public class BlackPlayer : MonoBehaviour        //p2输入检测，动画处理
 {
     private float move;
-    private float speed = 3f;
+    private float speed = 3.5f;
     private bool jump;
     private BlackCC bCC;
     public bool isSuperMode = false;//蓄力状态
@@ -27,9 +27,9 @@ public class BlackPlayer : MonoBehaviour        //p2输入检测，动画处理
     {
         if (!cantControl)
         {
-            move = Input.GetAxis("Horizontal2");
-            jump = Input.GetKeyDown(KeyCode.UpArrow);
-            changeMode = Input.GetKeyDown(KeyCode.DownArrow);
+            move = Input.GetAxis("Horizontal");
+            jump = Input.GetKeyDown(KeyCode.W);
+            changeMode = Input.GetKeyDown(KeyCode.S);
             bCC.Move(move * speed, jump);
             if (changeMode)
             {

@@ -5,7 +5,7 @@ using UnityEngine;
 public class WhitePlayer : MonoBehaviour            //p1输入检测，动画处理
 {
     private float move;
-    private float speed = 3f;
+    private float speed = 3.5f;
     private bool jump;
     private WhiteCC wCC;
     private Rigidbody2D rig;
@@ -26,17 +26,17 @@ public class WhitePlayer : MonoBehaviour            //p1输入检测，动画处
     {
         if (!cantControl)
         {
-            move = Input.GetAxis("Horizontal");
-            jump = Input.GetKeyDown(KeyCode.W);
-            if (Input.GetKeyDown(KeyCode.S))
+            move = Input.GetAxis("Horizontal2");
+            jump = Input.GetKeyDown(KeyCode.UpArrow);
+            if (Input.GetKeyDown(KeyCode.DownArrow))
             {
                 if (wCC.whiteSideCube && rig.velocity.y == 0)
                 {
                     wCC.whiteSideCube.ColorManage(0);
                 }
             }
+            wCC.Move(move * speed, jump);
         }
-        wCC.Move(move * speed, jump);
         if (!wCC.isGrounded)
         {
             anim.SetBool("isRunning", false);
