@@ -18,7 +18,7 @@ public class GreyCube : MonoBehaviour,ColoredCube  //通用灰色脚本
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         gameController = GameObject.FindWithTag("GameControllerTag").GetComponent<GameController>();
-        spriteRenderer.sprite = gameController.greySprite[Random.Range(0, 3)];
+        //spriteRenderer.sprite = gameController.greySprite[Random.Range(0, 3)];
         if (!initExist)
         {
             colli.enabled = false;

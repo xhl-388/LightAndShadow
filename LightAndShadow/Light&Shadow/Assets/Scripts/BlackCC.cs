@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BlackCC : MonoBehaviour            //影的角色控制器
 {
-    private float jumpForce=500f;           
+    private float jumpForce=600f;           
     public Transform groundCheck;           
     const float groundCheckRadius = 0.1f;  
     [HideInInspector]

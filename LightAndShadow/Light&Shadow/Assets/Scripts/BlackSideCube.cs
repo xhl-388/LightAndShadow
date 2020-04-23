@@ -135,8 +135,10 @@ public class BlackSideCube : MonoBehaviour,ColoredCube              //影角色�
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (isWhite && collision.gameObject == blackP &&collision==blackP.GetComponent<CircleCollider2D>()&& blackPlayer.isSuperMode&&blackP.GetComponent<Rigidbody2D>().velocity.y>0)
-           boxColli.enabled = true ;
+        if (isWhite && collision.gameObject == blackP && blackPlayer.isSuperMode&&blackP.GetComponent<Rigidbody2D>().velocity.y>0)
+        { boxColli.enabled = true;
+            Debug.Log("Chnnn" + gameObject.name);
+        }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -145,16 +147,23 @@ public class BlackSideCube : MonoBehaviour,ColoredCube              //影角色�
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (isWhite&&blackPlayer.isSuperMode)
+        if (isWhite)
         {
-            ColorManage(0);
-            blackPlayer.isSuperMode = false;
+            if (blackPlayer.isSuperMode)
+            {
+                ColorManage(0);
+                blackPlayer.isSuperMode = false;
+            }
         }
-        else if (blackPlayer.isSuperMode)
+        else
         {
-            ColorManage(0);
-            blackPlayer.isSuperMode = false;
+            if (blackPlayer.isSuperMode && collision.collider == blackP.GetComponent<CircleCollider2D>())
+            {
+                ColorManage(0);
+                blackPlayer.isSuperMode = false;
+            }
         }
+        
     }
     private int GetFistMirrorIndex()
     {
