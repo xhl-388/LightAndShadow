@@ -30,12 +30,17 @@ public class BlackPlayer : MonoBehaviour        //p2输入检测，动画处理
             move = Input.GetAxis("Horizontal");
             jump = Input.GetKeyDown(KeyCode.W);
             changeMode = Input.GetKeyDown(KeyCode.S);
-            bCC.Move(move * speed, jump);
             if (changeMode)
             {
                 isSuperMode = !isSuperMode;
             }
         }
+        else
+        {
+            move = 0;
+            jump = false;
+        }
+        bCC.Move(move * speed, jump);
         if (!bCC.isGrounded)
         {
             anim.SetBool("isRunning", false);

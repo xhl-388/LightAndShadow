@@ -35,8 +35,12 @@ public class WhitePlayer : MonoBehaviour            //p1输入检测，动画处
                     wCC.whiteSideCube.ColorManage(0);
                 }
             }
-            wCC.Move(move * speed, jump);
         }
+        else {
+            move = 0;
+            jump = false;
+        }
+        wCC.Move(move * speed, jump);
         if (!wCC.isGrounded)
         {
             anim.SetBool("isRunning", false);

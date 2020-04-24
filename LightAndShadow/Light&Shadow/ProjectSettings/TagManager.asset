@@ -10,6 +10,8 @@ TagManager:
   - Mirror
   - MultiColorCube
   - Plunger
+  - UI_Pausing
+  - UI_Settings
   layers:
   - Default
   - TransparentFX

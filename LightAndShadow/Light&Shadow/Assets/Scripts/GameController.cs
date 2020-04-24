@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 public interface ColoredCube        //方块通用接口
 {
     void ChangeColor();             //直接改变颜色 
@@ -23,6 +24,9 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
     [HideInInspector]
     public bool whiteIsOnPlace=false;
     private bool hasSucceed = false;
+    private bool isPause=false;
+    private GameObject UI_pausing;
+    private GameObject UI_settings;
     private void Start()
     {
         mirrors = GameObject.FindGameObjectsWithTag("Mirror");
@@ -30,6 +34,10 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
         plungers = GameObject.FindGameObjectsWithTag("Plunger");
         blackP = GameObject.FindWithTag("BlackP");
         whiteP = GameObject.FindWithTag("WhiteP");
+        UI_pausing = GameObject.FindWithTag("UI_Pausing");
+        UI_settings = GameObject.FindWithTag("UI_Settings");
+        UI_pausing.SetActive(false);
+        UI_settings.SetActive(false);
     }
     private void Update()
     {
@@ -40,7 +48,45 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
                 hasSucceed = true;
                 Succeed();
             }
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Time.timeScale = 0;
+                UI_pausing.SetActive(true);
+            }
         }
+    }
+
+
+    public void PauseOnClick()
+    {
+        Time.timeScale = 1;
+        UI_pausing.SetActive(false);
+    }
+    public void ReplayOnClick()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    public void SettingsOnClick()
+    {
+        UI_pausing.SetActive(false);
+        UI_settings.SetActive(true);
+    }
+    public void ExitOnClick()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(0);
+    }
+
+    public void BackOnClick()
+    {
+        UI_settings.SetActive(false);
+        UI_pausing.SetActive(true);
+    }
+    IEnumerator LoadNextScene()
+    {
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
     private void Succeed()
     {
@@ -49,6 +95,8 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
         blackP.GetComponent<BlackPlayer>().cantControl = true;
         whiteP.GetComponent<WhitePlayer>().cantControl = true;
         Debug.Log("Succeed");
+        if(SceneManager.GetActiveScene().buildIndex+1<SceneManager.sceneCountInBuildSettings)
+        StartCoroutine(LoadNextScene());
     }
     public void TellMirror(ColoredCube cube)
     {

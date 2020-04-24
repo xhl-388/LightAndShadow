@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc4a6e11449cac945a3a1cec68d46092, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cantControl: 0
 --- !u!114 &4030894019459703589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,7 +150,7 @@ Rigidbody2D:
   m_Material: {fileID: 6200000, guid: 6badb2109867e6a4181759aadbb623b9, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!95 &95816632155410370
 Animator:
