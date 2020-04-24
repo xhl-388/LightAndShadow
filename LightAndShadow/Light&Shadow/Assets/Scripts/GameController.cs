@@ -48,8 +48,9 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
                 hasSucceed = true;
                 Succeed();
             }
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (!isPause&&Input.GetKeyDown(KeyCode.Escape))
             {
+                isPause = true;
                 Time.timeScale = 0;
                 UI_pausing.SetActive(true);
             }
@@ -59,6 +60,7 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
 
     public void PauseOnClick()
     {
+        isPause = false;
         Time.timeScale = 1;
         UI_pausing.SetActive(false);
     }

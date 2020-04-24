@@ -9,7 +9,7 @@ public class ACamera : MonoBehaviour
     {
         whiteT = GameObject.FindWithTag("WhiteP").GetComponent<Transform>();
     }
-    private void LateUpdate()
+    private void FixedUpdate()
     {
         Vector3 pos =whiteT.position - this.transform.position;
         pos.z = 0;
