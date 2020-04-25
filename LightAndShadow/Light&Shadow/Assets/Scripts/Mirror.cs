@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Mirror : MonoBehaviour            //同化镜
 {
-    public float timeBeforeReflect = 1f;
+    private float timeBeforeReflect = 0.75f;
     public bool isHorizontal = true;
     public bool isOpposite = true;
     public List<ColoredCube> leftOrDownSideCubes;

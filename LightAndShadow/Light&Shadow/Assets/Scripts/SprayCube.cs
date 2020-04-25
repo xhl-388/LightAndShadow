@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SprayCube : MonoBehaviour
 {
-    private float sprayForce=900f;                             //弹跳力
+    private float sprayForce=800f;                             //弹跳力
     private LayerMask playerLayer;
     private WhiteCC wcc;
     private BlackCC bcc;
