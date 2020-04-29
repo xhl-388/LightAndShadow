@@ -29,11 +29,11 @@ public class Mirror : MonoBehaviour            //同化镜
         RaycastHit2D[] rayHit;
         if (isHorizontal)
         {
-            rayHit = Physics2D.RaycastAll(transform.position, new Vector2(-1, 0), 20f, cubeLayer);
+            rayHit = Physics2D.RaycastAll(transform.position, new Vector2(-1, 0), 30f, cubeLayer);
         }
         else
         {
-            rayHit = Physics2D.RaycastAll(transform.position, new Vector2(0, -1), 20f, cubeLayer);
+            rayHit = Physics2D.RaycastAll(transform.position, new Vector2(0, -1), 30f, cubeLayer);
         }
         for (int i = 0; i < rayHit.Length; i++)
         {

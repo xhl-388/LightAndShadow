@@ -41,6 +41,7 @@ public class GreyCube : MonoBehaviour,ColoredCube  //通用灰色脚本
             {
                 ColorManage(0);
                 blackP.isSuperMode = false;
+                blackP.GetComponent<BlackPlayer>().GetDamaged();
             }
         }
     }

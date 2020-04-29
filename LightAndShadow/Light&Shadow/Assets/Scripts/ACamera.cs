@@ -5,7 +5,7 @@ using UnityEngine;
 public class ACamera : MonoBehaviour
 {
     private Transform whiteT;
-    private void Start()
+    private void Awake()
     {
         whiteT = GameObject.FindWithTag("WhiteP").GetComponent<Transform>();
     }

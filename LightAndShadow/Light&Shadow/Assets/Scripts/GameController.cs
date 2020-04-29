@@ -27,13 +27,31 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
     private bool isPause=false;
     private GameObject UI_pausing;
     private GameObject UI_settings;
+    private float minApartDistance=5f;
+    private GameObject cameraA;
+    private GameObject cameraB;
+    private bool isApart;
     private void Start()
     {
+        cameraA = GameObject.Find("Camera_A");
+        cameraB = GameObject.Find("Camera_B");
         mirrors = GameObject.FindGameObjectsWithTag("Mirror");
         multis = GameObject.FindGameObjectsWithTag("MultiColorCube");
         plungers = GameObject.FindGameObjectsWithTag("Plunger");
         blackP = GameObject.FindWithTag("BlackP");
         whiteP = GameObject.FindWithTag("WhiteP");
+        if (Mathf.Abs(blackP.transform.position.x - whiteP.transform.position.x) < minApartDistance)
+        {
+            cameraA.SetActive(false);
+            cameraB.GetComponent<BCamera>().enabled = false;
+            cameraB.GetComponent<Camera>().rect = new Rect(0, 0, 1, 1);
+            isApart = false;
+        }
+        else
+        {
+            cameraB.GetComponent<Follow>().enabled = false;
+            isApart = true;
+        }
         UI_pausing = GameObject.FindWithTag("UI_Pausing");
         UI_settings = GameObject.FindWithTag("UI_Settings");
         UI_pausing.SetActive(false);
@@ -53,6 +71,29 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
                 isPause = true;
                 Time.timeScale = 0;
                 UI_pausing.SetActive(true);
+            }
+        }
+        if (Mathf.Abs(blackP.transform.position.x - whiteP.transform.position.x) < minApartDistance)
+        {
+            if (isApart)
+            {
+                cameraA.SetActive(false);
+                cameraB.GetComponent<BCamera>().enabled = false;
+                cameraB.GetComponent<Follow>().enabled = true;
+                cameraB.GetComponent<Camera>().rect = new Rect(0, 0, 1, 1);
+                isApart = false;
+            }
+        }
+        else
+        {
+            if (!isApart)
+            {
+                cameraB.GetComponent<Follow>().enabled = false;
+                cameraA.SetActive(true);
+                cameraB.GetComponent<BCamera>().enabled = true;
+                cameraB.GetComponent<Camera>().orthographicSize = 5f;
+                cameraB.GetComponent<Camera>().rect = new Rect(0, 0, 0.5f, 1);
+                isApart = true;
             }
         }
     }

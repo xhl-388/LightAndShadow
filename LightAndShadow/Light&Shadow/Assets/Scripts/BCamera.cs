@@ -5,7 +5,7 @@ using UnityEngine;
 public class BCamera : MonoBehaviour
 {
     private Transform blackT;
-    private void Start()
+    private void Awake()
     {
         blackT = GameObject.FindWithTag("BlackP").GetComponent<Transform>();
     }

@@ -15,6 +15,7 @@ public class BlackPlayer : MonoBehaviour        //p2输入检测，动画处理
     [HideInInspector]
     public bool cantControl = false;
     private float lastVelocityY;
+    public int HP=3;
     private void Start()
     {
         bCC = GetComponent<BlackCC>();
@@ -24,9 +25,21 @@ public class BlackPlayer : MonoBehaviour        //p2输入检测，动画处理
     private void FixedUpdate()
     {
     }
+    public void GetDamaged()
+    {
+        HP--;
+        if (HP == 0)
+        {
+            Die();
+        }
+    }
+    private void Die()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (lastVelocityY < -15)
+        if (lastVelocityY < -17)
         {
             if(collision.gameObject.GetComponent<SprayCube>()&& collision.gameObject.GetComponent<SprayCube>().enabled)
             {
@@ -34,7 +47,7 @@ public class BlackPlayer : MonoBehaviour        //p2输入检测，动画处理
             }
             else
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                GetDamaged();
             }
         }
     }

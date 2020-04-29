@@ -15,7 +15,6 @@ public class Follow : MonoBehaviour
         whiteP = GameObject.FindWithTag("WhiteP").GetComponent<Transform>();
         main = GetComponent<Camera>();
         initSize = widthOfMap / 2.8f;
-        main.orthographicSize = initSize;
     }
     private void LateUpdate()
     {
