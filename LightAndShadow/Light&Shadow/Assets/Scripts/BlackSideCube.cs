@@ -153,7 +153,6 @@ public class BlackSideCube : MonoBehaviour,ColoredCube              //影角色�
             {
                 ColorManage(0);
                 blackPlayer.isSuperMode = false;
-                blackPlayer.GetDamaged();
             }
         }
         else
@@ -162,7 +161,6 @@ public class BlackSideCube : MonoBehaviour,ColoredCube              //影角色�
             {
                 ColorManage(0);
                 blackPlayer.isSuperMode = false;
-                blackPlayer.GetDamaged();
             }
         }
         
