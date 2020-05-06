@@ -69,15 +69,9 @@ public class BlackPlayer : MonoBehaviour        //p2输入检测，动画处理
             jump = false;
         }
         bCC.Move(move * speed, jump);
-        if (!bCC.isGrounded)
-        {
-            anim.SetBool("isRunning", false);
-        }
-        else if (Mathf.Abs(rig.velocity.x) < 0.1f)
-        {
-            anim.SetBool("isRunning", false);
-        }
-        else anim.SetBool("isRunning", true);
+        anim.SetFloat("velocityY", rig.velocity.y);
+        anim.SetFloat("velocityX", Mathf.Abs(rig.velocity.x));
+        anim.SetBool("isGround", bCC.isGrounded);
     }
     private void LateUpdate()
     {

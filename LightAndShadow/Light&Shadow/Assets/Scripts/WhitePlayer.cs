@@ -41,15 +41,9 @@ public class WhitePlayer : MonoBehaviour            //p1输入检测，动画处
             jump = false;
         }
         wCC.Move(move * speed, jump);
-        if (!wCC.isGrounded)
-        {
-            anim.SetBool("isRunning", false);
-        }
-        else if (Mathf.Abs(rig.velocity.x) < 0.1f)
-        {
-            anim.SetBool("isRunning", false);
-        }
-        else anim.SetBool("isRunning", true);
+        anim.SetFloat("velocityY", rig.velocity.y);
+        anim.SetFloat("velocityX", Mathf.Abs(rig.velocity.x));
+        anim.SetBool("isGround", wCC.isGrounded);
 
     }
 }

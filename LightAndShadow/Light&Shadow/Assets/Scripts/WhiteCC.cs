@@ -6,7 +6,7 @@ public class WhiteCC : MonoBehaviour            //光的角色控制器
 {
     private float jumpForce = 600f;
     public Transform groundCheck;
-    const float groundCheckRadius = 0.1f;
+    const float groundCheckRadius = 0.2f;
     [HideInInspector]
     public bool isGrounded;
     private bool facingRight =false;
