@@ -10,8 +10,12 @@ public class Mirror : MonoBehaviour            //同化镜
     public List<ColoredCube> leftOrDownSideCubes;
     public List<ColoredCube> rightOrUpbSideCubes;
     private LayerMask cubeLayer;
+    private GameObject explosion_Blue;
+    private GameObject explosion_Purple;
     private void Awake()
     {
+        explosion_Blue = GameObject.FindWithTag("GameControllerTag").GetComponent<GameController>().explosion_Blue;
+        explosion_Purple = GameObject.FindWithTag("GameControllerTag").GetComponent<GameController>().explosion_Purple;
         leftOrDownSideCubes = new List<ColoredCube>();
         rightOrUpbSideCubes = new List<ColoredCube>();
         cubeLayer =1<<LayerMask.NameToLayer("Cube");
@@ -187,5 +191,16 @@ public class Mirror : MonoBehaviour            //同化镜
     {
         yield return new WaitForSeconds(timeBeforeReflect);
         cCube.ColorManage(0);
+        GameObject obj;
+        if (!isOpposite)
+        {
+           obj = Instantiate(explosion_Blue, cCube.GetPosition(), Quaternion.identity);
+        }
+        else
+        {
+           obj = Instantiate(explosion_Purple, cCube.GetPosition(), Quaternion.identity);
+        }
+        yield return new WaitForSeconds(2f);
+        Destroy(obj);
     }
 }

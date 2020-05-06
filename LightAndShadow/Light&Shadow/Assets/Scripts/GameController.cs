@@ -32,6 +32,13 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
     private GameObject cameraB;
     private GameObject cameraMap;
     private bool isApart;
+    private float health_Black=100f;
+    private float health_White=100f;
+    public bool isLineReflect;
+    public Vector2 point;
+    public float line;
+    public GameObject explosion_Blue;
+    public GameObject explosion_Purple;
     private void Start()
     {
         cameraA = GameObject.Find("Camera_A");
@@ -75,6 +82,32 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
                 isPause = true;
                 Time.timeScale = 0;
                 UI_pausing.SetActive(true);
+            }
+            if (isLineReflect)
+            {
+                if(new Vector2(blackP.transform.position.x + whiteP.transform.position.x - 2 * line, blackP.transform.position.y - whiteP.transform.position.y).magnitude > 3f)
+                {
+                    health_Black = Mathf.Clamp(health_Black - 5 * Time.deltaTime, 0f, 100f);
+                    health_White = Mathf.Clamp(health_White - 5 * Time.deltaTime, 0f, 100f);
+                }
+                else
+                {
+                    health_Black =Mathf.Clamp(health_Black + 10 * Time.deltaTime, 0f, 100f);
+                    health_White = Mathf.Clamp(health_White + 10 * Time.deltaTime, 0f, 100f);
+                }
+            }
+            else
+            {
+                if(new Vector2(blackP.transform.position.x + whiteP.transform.position.x - 2 * point.x, blackP.transform.position.y + whiteP.transform.position.y - 2 * point.y).magnitude > 3f)
+                {
+                    health_Black = Mathf.Clamp(health_Black - 5 * Time.deltaTime, 0f, 100f);
+                    health_White = Mathf.Clamp(health_White - 5 * Time.deltaTime, 0f, 100f);
+                }
+                else
+                {
+                    health_Black = Mathf.Clamp(health_Black + 10 * Time.deltaTime, 0f, 100f);
+                    health_White = Mathf.Clamp(health_White + 10 * Time.deltaTime, 0f, 100f);
+                }
             }
         }
         //if (Mathf.Abs(blackP.transform.position.x - whiteP.transform.position.x) < minApartDistance)
