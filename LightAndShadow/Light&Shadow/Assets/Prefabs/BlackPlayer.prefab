@@ -67,7 +67,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isSuperMode: 0
   cantControl: 0
-  HP: 3
 --- !u!212 &2154856674497976903
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -105,7 +104,7 @@ SpriteRenderer:
   m_SortingLayerID: 1386769231
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: f3c8611d172718845a25e704f641180c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 15e11853e4c9bda42944c575aec42f62, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -129,8 +128,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.001839608, y: -0.10929346}
-  m_Size: {x: 0.6133992, y: 0.93267727}
+  m_Offset: {x: 0, y: -0.10929346}
+  m_Size: {x: 0.42813325, y: 0.93267727}
   m_Direction: 0
 --- !u!50 &2154856674497976901
 Rigidbody2D:
@@ -166,9 +165,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.35963058}
+  m_Offset: {x: 0, y: 0.35350555}
   serializedVersion: 2
-  m_Radius: 0.045793533
+  m_Radius: 0.042731136
 --- !u!95 &95341991638212282
 Animator:
   serializedVersion: 3

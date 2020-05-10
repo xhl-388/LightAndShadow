@@ -33,6 +33,7 @@ public class WhitePlayer : MonoBehaviour            //p1输入检测，动画处
                 if (wCC.whiteSideCube && rig.velocity.y == 0)
                 {
                     wCC.whiteSideCube.ColorManage(0);
+                    rig.AddForce(new Vector2(0f, 450f));
                 }
             }
         }

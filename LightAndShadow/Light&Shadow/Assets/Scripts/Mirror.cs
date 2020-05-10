@@ -141,7 +141,7 @@ public class Mirror : MonoBehaviour            //同化镜
             {
                 if (cCube.IsWhite() == cCubeOpposite.IsWhite())
                 {
-                    StartCoroutine(ChangeColorLater(cCubeOpposite));
+                    StartCoroutine(ChangeColorLater(cCube,cCubeOpposite));
                 }
                 else
                 {
@@ -152,7 +152,7 @@ public class Mirror : MonoBehaviour            //同化镜
             {
                 if (cCube.IsWhite() != cCubeOpposite.IsWhite())
                 {
-                    StartCoroutine(ChangeColorLater(cCubeOpposite));
+                    StartCoroutine(ChangeColorLater(cCube,cCubeOpposite));
                 }
                 else
                 {
@@ -167,7 +167,7 @@ public class Mirror : MonoBehaviour            //同化镜
             {
                 if (cCube.IsWhite() == cCubeOpposite.IsWhite())
                 {
-                    StartCoroutine(ChangeColorLater(cCubeOpposite));
+                    StartCoroutine(ChangeColorLater(cCube,cCubeOpposite));
                 }
                 else
                 {
@@ -178,7 +178,7 @@ public class Mirror : MonoBehaviour            //同化镜
             {
                 if (cCube.IsWhite() != cCubeOpposite.IsWhite())
                 {
-                    StartCoroutine(ChangeColorLater(cCubeOpposite));
+                    StartCoroutine(ChangeColorLater(cCube,cCubeOpposite));
                 }
                 else
                 {
@@ -187,20 +187,30 @@ public class Mirror : MonoBehaviour            //同化镜
             }
         }
     }
-    IEnumerator ChangeColorLater(ColoredCube cCube)
+    IEnumerator ChangeColorLater(ColoredCube cCube,ColoredCube cCubeOpposite)
     {
-        yield return new WaitForSeconds(timeBeforeReflect);
-        cCube.ColorManage(0);
-        GameObject obj;
+        GameObject obj1;
         if (!isOpposite)
         {
-           obj = Instantiate(explosion_Blue, cCube.GetPosition(), Quaternion.identity);
+            obj1 = Instantiate(explosion_Blue, cCube.GetPosition(), Quaternion.identity);
         }
         else
         {
-           obj = Instantiate(explosion_Purple, cCube.GetPosition(), Quaternion.identity);
+            obj1 = Instantiate(explosion_Purple, cCube.GetPosition(), Quaternion.identity);
+        }
+        yield return new WaitForSeconds(timeBeforeReflect);
+        cCubeOpposite.ColorManage(0);
+        GameObject obj;
+        if (!isOpposite)
+        {
+           obj = Instantiate(explosion_Blue, cCubeOpposite.GetPosition(), Quaternion.identity);
+        }
+        else
+        {
+           obj = Instantiate(explosion_Purple, cCubeOpposite.GetPosition(), Quaternion.identity);
         }
         yield return new WaitForSeconds(2f);
         Destroy(obj);
+        Destroy(obj1);
     }
 }

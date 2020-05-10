@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 public class BlackPlayer : MonoBehaviour        //p2输入检测，动画处理
 {
     private float move;
@@ -15,7 +14,6 @@ public class BlackPlayer : MonoBehaviour        //p2输入检测，动画处理
     [HideInInspector]
     public bool cantControl = false;
     private float lastVelocityY;
-    public int HP=3;
     private void Start()
     {
         bCC = GetComponent<BlackCC>();
@@ -25,18 +23,6 @@ public class BlackPlayer : MonoBehaviour        //p2输入检测，动画处理
     private void FixedUpdate()
     {
     }
-    public void GetDamaged()
-    {
-        HP--;
-        if (HP == 0)
-        {
-            Die();
-        }
-    }
-    private void Die()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (lastVelocityY < -17)
@@ -44,10 +30,6 @@ public class BlackPlayer : MonoBehaviour        //p2输入检测，动画处理
             if(collision.gameObject.GetComponent<SprayCube>()&& collision.gameObject.GetComponent<SprayCube>().enabled)
             {
                 return;
-            }
-            else
-            {
-                GetDamaged();
             }
         }
     }

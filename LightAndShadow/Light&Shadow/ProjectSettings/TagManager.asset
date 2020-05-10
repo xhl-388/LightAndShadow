@@ -12,6 +12,7 @@ TagManager:
   - Plunger
   - UI_Pausing
   - UI_Settings
+  - UI_Play
   layers:
   - Default
   - TransparentFX

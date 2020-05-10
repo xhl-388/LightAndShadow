@@ -27,18 +27,26 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
     private bool isPause=false;
     private GameObject UI_pausing;
     private GameObject UI_settings;
-    private float minApartDistance=5f;
+    private GameObject UI_play;
     private GameObject cameraA;
     private GameObject cameraB;
     private GameObject cameraMap;
     private bool isApart;
-    private float health_Black=100f;
-    private float health_White=100f;
+    [HideInInspector]
+    public float health_Black=100f;
+    [HideInInspector]
+    public float health_White=100f;
     public bool isLineReflect;
     public Vector2 point;
     public float line;
     public GameObject explosion_Blue;
     public GameObject explosion_Purple;
+    public Texture yellowHpB;
+    public Texture redHpB;
+    public Texture greenHpB;
+    public Texture yellowHpW;
+    public Texture redHpW;
+    public Texture greenHpW;
     private void Start()
     {
         cameraA = GameObject.Find("Camera_A");
@@ -51,20 +59,9 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
         plungers = GameObject.FindGameObjectsWithTag("Plunger");
         blackP = GameObject.FindWithTag("BlackP");
         whiteP = GameObject.FindWithTag("WhiteP");
-        //if (Mathf.Abs(blackP.transform.position.x - whiteP.transform.position.x) < minApartDistance)
-        //{
-        //    cameraA.SetActive(false);
-        //    cameraB.GetComponent<BCamera>().enabled = false;
-        //    cameraB.GetComponent<Camera>().rect = new Rect(0, 0, 1, 1);
-        //    isApart = false;
-        //}
-        //else
-        //{
-        //    cameraB.GetComponent<Follow>().enabled = false;
-        //    isApart = true;
-        //}
         UI_pausing = GameObject.FindWithTag("UI_Pausing");
         UI_settings = GameObject.FindWithTag("UI_Settings");
+        UI_play = GameObject.FindWithTag("UI_Play");
         UI_pausing.SetActive(false);
         UI_settings.SetActive(false);
     }
@@ -77,62 +74,37 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
                 hasSucceed = true;
                 Succeed();
             }
-            if (!isPause&&Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                isPause = true;
-                Time.timeScale = 0;
-                UI_pausing.SetActive(true);
+                PauseOnClick();
             }
             if (isLineReflect)
             {
-                if(new Vector2(blackP.transform.position.x + whiteP.transform.position.x - 2 * line, blackP.transform.position.y - whiteP.transform.position.y).magnitude > 3f)
+                if(new Vector2(blackP.transform.position.x + whiteP.transform.position.x - 2 * line, blackP.transform.position.y - whiteP.transform.position.y).magnitude > 5f)
                 {
-                    health_Black = Mathf.Clamp(health_Black - 5 * Time.deltaTime, 0f, 100f);
-                    health_White = Mathf.Clamp(health_White - 5 * Time.deltaTime, 0f, 100f);
+                    health_Black = Mathf.Clamp(health_Black - 1 * Time.deltaTime, 0f, 100f);
+                    health_White = Mathf.Clamp(health_White - 1 * Time.deltaTime, 0f, 100f);
                 }
                 else
                 {
-                    health_Black =Mathf.Clamp(health_Black + 10 * Time.deltaTime, 0f, 100f);
-                    health_White = Mathf.Clamp(health_White + 10 * Time.deltaTime, 0f, 100f);
+                    health_Black =Mathf.Clamp(health_Black + 2 * Time.deltaTime, 0f, 100f);
+                    health_White = Mathf.Clamp(health_White + 2 * Time.deltaTime, 0f, 100f);
                 }
             }
             else
             {
-                if(new Vector2(blackP.transform.position.x + whiteP.transform.position.x - 2 * point.x, blackP.transform.position.y + whiteP.transform.position.y - 2 * point.y).magnitude > 3f)
+                if(new Vector2(blackP.transform.position.x + whiteP.transform.position.x - 2 * point.x, blackP.transform.position.y + whiteP.transform.position.y - 2 * point.y).magnitude > 5f)
                 {
-                    health_Black = Mathf.Clamp(health_Black - 5 * Time.deltaTime, 0f, 100f);
-                    health_White = Mathf.Clamp(health_White - 5 * Time.deltaTime, 0f, 100f);
+                    health_Black = Mathf.Clamp(health_Black - 1 * Time.deltaTime, 0f, 100f);
+                    health_White = Mathf.Clamp(health_White - 1 * Time.deltaTime, 0f, 100f);
                 }
                 else
                 {
-                    health_Black = Mathf.Clamp(health_Black + 10 * Time.deltaTime, 0f, 100f);
-                    health_White = Mathf.Clamp(health_White + 10 * Time.deltaTime, 0f, 100f);
+                    health_Black = Mathf.Clamp(health_Black + 2 * Time.deltaTime, 0f, 100f);
+                    health_White = Mathf.Clamp(health_White + 2 * Time.deltaTime, 0f, 100f);
                 }
             }
         }
-        //if (Mathf.Abs(blackP.transform.position.x - whiteP.transform.position.x) < minApartDistance)
-        //{
-        //    if (isApart)
-        //    {
-        //        cameraA.SetActive(false);
-        //        cameraB.GetComponent<BCamera>().enabled = false;
-        //        cameraB.GetComponent<Follow>().enabled = true;
-        //        cameraB.GetComponent<Camera>().rect = new Rect(0, 0, 1, 1);
-        //        isApart = false;
-        //    }
-        //}
-        //else
-        //{
-        //    if (!isApart)
-        //    {
-        //        cameraB.GetComponent<Follow>().enabled = false;
-        //        cameraA.SetActive(true);
-        //        cameraB.GetComponent<BCamera>().enabled = true;
-        //        cameraB.GetComponent<Camera>().orthographicSize = 5f;
-        //        cameraB.GetComponent<Camera>().rect = new Rect(0, 0, 0.5f, 1);
-        //        isApart = true;
-        //    }
-        //}
         if (Input.GetKey(KeyCode.Space))
         {
             if (isApart)
@@ -155,12 +127,22 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
         }
     }
 
-
     public void PauseOnClick()
     {
-        isPause = false;
-        Time.timeScale = 1;
-        UI_pausing.SetActive(false);
+        if (isPause)
+        {
+            isPause = false;
+            Time.timeScale = 1;
+            UI_pausing.SetActive(false);
+            UI_play.SetActive(true);
+        }
+        else
+        {
+            isPause = true;
+            Time.timeScale = 0;
+            UI_pausing.SetActive(true);
+            UI_play.SetActive(false) ;
+        }
     }
     public void ReplayOnClick()
     {
