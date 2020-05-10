@@ -47,6 +47,7 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
     public Texture yellowHpW;
     public Texture redHpW;
     public Texture greenHpW;
+    private GameObject partOfUI;
     private void Start()
     {
         cameraA = GameObject.Find("Camera_A");
@@ -62,6 +63,7 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
         UI_pausing = GameObject.FindWithTag("UI_Pausing");
         UI_settings = GameObject.FindWithTag("UI_Settings");
         UI_play = GameObject.FindWithTag("UI_Play");
+        partOfUI = UI_play.transform.GetChild(0).gameObject;
         UI_pausing.SetActive(false);
         UI_settings.SetActive(false);
     }
@@ -109,6 +111,7 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
         {
             if (isApart)
             {
+                partOfUI.SetActive(false);
                 cameraA.SetActive(false);
                 cameraB.SetActive(false);
                 cameraMap.SetActive(true);
@@ -119,6 +122,7 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
         {
             if (!isApart)
             {
+                partOfUI.SetActive(true);
                 cameraA.SetActive(true);
                 cameraB.SetActive(true);
                 cameraMap.SetActive(false);
