@@ -63,6 +63,14 @@ MonoBehaviour:
   yellowHpB: {fileID: 2800000, guid: e3bf0d692e5d6d54c82b2ba086fa5273, type: 3}
   redHpB: {fileID: 2800000, guid: d491754509076fa4b86fbaca7570193b, type: 3}
   greenHpB: {fileID: 2800000, guid: 38e1e08df3e6b8e4f80b41449c57fc46, type: 3}
-  yellowHpW: {fileID: 2800000, guid: e3bf0d692e5d6d54c82b2ba086fa5273, type: 3}
-  redHpW: {fileID: 2800000, guid: d491754509076fa4b86fbaca7570193b, type: 3}
-  greenHpW: {fileID: 2800000, guid: 38e1e08df3e6b8e4f80b41449c57fc46, type: 3}
+  yellowHpW: {fileID: 2800000, guid: b2b79a56214cf35439986957cbc905b1, type: 3}
+  redHpW: {fileID: 2800000, guid: 06fb5b9b02852e94c91f7cb9ae114292, type: 3}
+  greenHpW: {fileID: 2800000, guid: a0f8dad9fcbfc6149ae0fb5367b8974c, type: 3}
+  whiteSquareOpp: {fileID: 1787072144878338951, guid: 740ea7118863e7e499c3420f34321dd0,
+    type: 3}
+  whiteSquareRef: {fileID: 6835973280770307374, guid: f9859e5af2810714684e1af1ff80ea58,
+    type: 3}
+  blackSquareOpp: {fileID: 4669151893412176217, guid: 3070cdbba4f146b4584842604cff906a,
+    type: 3}
+  blackSquareRef: {fileID: 4499453752239417274, guid: fe2925733fcecf048bcc3067381dd717,
+    type: 3}

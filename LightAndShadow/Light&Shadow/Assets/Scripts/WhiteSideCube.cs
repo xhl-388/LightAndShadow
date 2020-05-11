@@ -14,6 +14,7 @@ public class WhiteSideCube : MonoBehaviour,ColoredCube              //光角色�
     private LayerMask playerLayer;
     private bool hasChecked=false;
     private bool isPlunger = false;
+    private bool hasSquare;
     private void Awake()
     {
         if (GetComponent<Plunger>()) isPlunger = true;
@@ -33,6 +34,14 @@ public class WhiteSideCube : MonoBehaviour,ColoredCube              //光角色�
         {
             colli.isTrigger = true;
         }
+    }
+    public bool HasSquare()
+    {
+        return hasSquare;
+    }
+    public void SetSquare(bool T)
+    {
+        hasSquare = T;
     }
     public void ColorManage(int x)
     {

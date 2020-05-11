@@ -8,9 +8,12 @@ public interface ColoredCube        //方块通用接口
     bool IsWhite();                 //返回是否为白色或是否存在
     void ColorManage(int x);        //x接受0和1 0表示被动触发 1是主动触发(判断过程)
     Vector2 GetPosition();          //返回x，y坐标
+    bool HasSquare();
+    void SetSquare(bool T);
 }
 public class GameController : MonoBehaviour     //游戏中的工具类脚本
 {
+    private float timeNow;
     public Sprite whiteSprite;
     public Sprite blackSprite;
     public Sprite[] greySprite=new Sprite[3];
@@ -48,8 +51,15 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
     public Texture redHpW;
     public Texture greenHpW;
     private GameObject partOfUI;
+    public GameObject whiteSquareOpp;
+    public GameObject whiteSquareRef;
+    public GameObject blackSquareOpp;
+    public GameObject blackSquareRef;
+    private LayerMask cubeLayer;
     private void Start()
     {
+        cubeLayer =1<< LayerMask.NameToLayer("Cube");
+        timeNow = Time.time;
         cameraA = GameObject.Find("Camera_A");
         cameraB = GameObject.Find("Camera_B");
         cameraMap = GameObject.Find("Camera_Map");
@@ -67,6 +77,94 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
         UI_pausing.SetActive(false);
         UI_settings.SetActive(false);
     }
+    private void FixedUpdate()
+    {
+        if (Time.time > timeNow + 1f)
+        {
+            timeNow = Time.time;
+            Collider2D[] colliBlack = Physics2D.OverlapCircleAll(blackP.transform.position, 4f, cubeLayer);
+            Collider2D[] colliWhite = Physics2D.OverlapCircleAll(whiteP.transform.position, 4f, cubeLayer);
+            for(int i = 0; i < colliBlack.Length; i++)
+            {
+                if (colliBlack[i].GetComponent<BlackSideCube>()) {
+                    BlackSideCube bsc= colliBlack[i].GetComponent<BlackSideCube>();
+                    if (!bsc.HasSquare()&&bsc.mirrors[0])
+                    {
+                        bsc.SetSquare(true);
+                        GameObject obj;
+                        if (bsc.mirrors[0].GetComponent<Mirror>().isOpposite)
+                        {
+                            obj=Instantiate(whiteSquareOpp, colliBlack[i].transform);
+                        }
+                        else
+                        {
+                            obj=Instantiate(whiteSquareRef, colliBlack[i].transform);
+                        }
+                        obj.GetComponent<DestroySelf>().OnCube = bsc;
+                    }
+                }
+                else if(colliBlack[i].GetComponent<GreyCube>())
+                {
+                    GreyCube gc = colliBlack[i].GetComponent<GreyCube>();
+                    if (!gc.HasSquare() && gc.mirrors[0])
+                    {
+                        gc.SetSquare(true);
+                        GameObject obj;
+                        if (gc.mirrors[0].GetComponent<Mirror>().isOpposite)
+                        {
+                            obj=Instantiate(blackSquareOpp, colliBlack[i].transform);
+                        }
+                        else
+                        {
+                            obj=Instantiate(blackSquareRef, colliBlack[i].transform);
+                        }
+                        obj.GetComponent<DestroySelf>().OnCube = gc;
+                        gc.onSquare = obj;
+                    }
+                }
+            }
+            for(int i = 0; i < colliWhite.Length; i++)
+            {
+                if (colliWhite[i].GetComponent<WhiteSideCube>())
+                {
+                    WhiteSideCube wsc = colliWhite[i].GetComponent<WhiteSideCube>();
+                    if (!wsc.HasSquare() && wsc.mirrors[0])
+                    {
+                        wsc.SetSquare(true);
+                        GameObject obj;
+                        if (wsc.mirrors[0].GetComponent<Mirror>().isOpposite)
+                        {
+                            obj=Instantiate(whiteSquareOpp, colliWhite[i].transform);
+                        }
+                        else
+                        {
+                            obj=Instantiate(whiteSquareRef, colliWhite[i].transform);
+                        }
+                        obj.GetComponent<DestroySelf>().OnCube = wsc;
+                    }
+                }
+                else if (colliWhite[i].GetComponent<GreyCube>())
+                {
+                    GreyCube gc = colliWhite[i].GetComponent<GreyCube>();
+                    if (!gc.HasSquare() && gc.mirrors[0])
+                    {
+                        gc.SetSquare(true);
+                        GameObject obj;
+                        if (gc.mirrors[0].GetComponent<Mirror>().isOpposite)
+                        {
+                            obj=Instantiate(blackSquareOpp, colliWhite[i].transform);
+                        }
+                        else
+                        {
+                            obj=Instantiate(blackSquareRef, colliWhite[i].transform);
+                        }
+                        obj.GetComponent<DestroySelf>().OnCube = gc;
+                        gc.onSquare = obj;
+                    }
+                }
+            }
+        }
+    }
     private void Update()
     {
         if (!hasSucceed)
@@ -82,7 +180,8 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
             }
             if (isLineReflect)
             {
-                if(new Vector2(blackP.transform.position.x + whiteP.transform.position.x - 2 * line, blackP.transform.position.y - whiteP.transform.position.y).magnitude > 5f)
+                float distance = new Vector2(blackP.transform.position.x + whiteP.transform.position.x - 2 * line, blackP.transform.position.y - whiteP.transform.position.y).magnitude;
+                if (distance> 5f||distance<1f)
                 {
                     health_Black = Mathf.Clamp(health_Black - 1 * Time.deltaTime, 0f, 100f);
                     health_White = Mathf.Clamp(health_White - 1 * Time.deltaTime, 0f, 100f);
@@ -95,7 +194,8 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
             }
             else
             {
-                if(new Vector2(blackP.transform.position.x + whiteP.transform.position.x - 2 * point.x, blackP.transform.position.y + whiteP.transform.position.y - 2 * point.y).magnitude > 5f)
+                float distance = new Vector2(blackP.transform.position.x + whiteP.transform.position.x - 2 * point.x, blackP.transform.position.y + whiteP.transform.position.y - 2 * point.y).magnitude;
+                if (distance> 5f||distance<1f)
                 {
                     health_Black = Mathf.Clamp(health_Black - 1 * Time.deltaTime, 0f, 100f);
                     health_White = Mathf.Clamp(health_White - 1 * Time.deltaTime, 0f, 100f);

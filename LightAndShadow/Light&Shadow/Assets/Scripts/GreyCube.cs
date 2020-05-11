@@ -14,6 +14,9 @@ public class GreyCube : MonoBehaviour,ColoredCube  //通用灰色脚本
     private bool hasChecked = false;
     private BlackPlayer blackP;
     private GameController gameController;
+    private bool hasSquare;
+    [HideInInspector]
+    public GameObject onSquare;
     private void Awake()
     {
     }
@@ -43,6 +46,14 @@ public class GreyCube : MonoBehaviour,ColoredCube  //通用灰色脚本
                 blackP.isSuperMode = false;
             }
         }
+    }
+    public bool HasSquare()
+    {
+        return hasSquare;
+    }
+    public void SetSquare(bool T)
+    {
+        hasSquare = T;
     }
     public void ColorManage(int x)
     {
@@ -84,6 +95,9 @@ public class GreyCube : MonoBehaviour,ColoredCube  //通用灰色脚本
     }
     public void ChangeColor()       //此处是改变灰色方块存在状态
     {
+        hasSquare = false;
+        Destroy(onSquare);
+        onSquare = null;
         Debug.Log("GeryCubeChanged"+this.gameObject.name);
         if (isExist)
         {
