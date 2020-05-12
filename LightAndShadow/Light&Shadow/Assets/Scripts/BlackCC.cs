@@ -23,12 +23,24 @@ public class BlackCC : MonoBehaviour            //影的角色控制器
     }
     private void FixedUpdate()              //检测是否着地
     {
-        Collider2D collider = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, ground | cubeLayer);
-        if (collider && !collider.isTrigger && Mathf.Abs(rigidBody2D.velocity.y) < 0.1f)
+        Collider2D[] collider = Physics2D.OverlapCircleAll(groundCheck.position, groundCheckRadius, ground | cubeLayer);
+        if (collider.Length != 0)
         {
-            isGrounded = true;
+            bool flag = false;
+            for(int i = 0; i < collider.Length; i++)
+            {
+                if (!collider[i].isTrigger)
+                {
+                    flag = true;
+                    break;
+                }
+            }
+            isGrounded = flag;
         }
-        else isGrounded = false;
+        if (Mathf.Abs(rigidBody2D.velocity.y) > 0.1f)
+        {
+            isGrounded = false;
+        }
     }
     private void Flip()                     //角色翻转
     {

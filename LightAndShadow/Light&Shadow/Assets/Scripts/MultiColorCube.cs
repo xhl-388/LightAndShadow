@@ -10,8 +10,10 @@ public class MultiColorCube : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Collider2D colli;
     private List<GameObject> cubesNearby = new List<GameObject>();
+    private Animator anim;
     private void Start()
     {
+        anim = GetComponent<Animator>();
         cubeLayer = 1<<LayerMask.NameToLayer("Cube");
         gameController = GameObject.FindWithTag("GameControllerTag").GetComponent<GameController>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -68,6 +70,16 @@ public class MultiColorCube : MonoBehaviour
         if (greyCount >= 0.5f * countAll)
         {
             ChangeColor(0);
+            for (int i= 0; i < colliders.Length; i++){
+                if (colliders[i].gameObject.GetComponent<GreyCube>())
+                {
+                    if (colliders[i].gameObject.GetComponent<SprayCube>())
+                    {
+                        colliders[i].gameObject.GetComponent<SprayCube>().enabled = true;
+                    }
+                    else colliders[i].gameObject.AddComponent<SprayCube>();
+                }
+            }
         }
         else if (blackCount > whiteCount)
         {
@@ -139,12 +151,11 @@ public class MultiColorCube : MonoBehaviour
         if (x == 0)
         {
             colli.enabled = true;
-            int n = Random.Range(0, 3);
-            spriteRenderer.sprite = gameController.greySprite[n];
+            anim.SetInteger("ColorState", 0);
         }
         else if (x == -1)
         {
-            spriteRenderer.sprite = gameController.blackSprite;
+            anim.SetInteger("ColorState", -1);
             if (isOnWhiteSide)
             {
                 colli.enabled = false;
@@ -153,7 +164,7 @@ public class MultiColorCube : MonoBehaviour
         }
         else
         {
-            spriteRenderer.sprite = gameController.whiteSprite;
+            anim.SetInteger("ColorState", 1);
             if (isOnWhiteSide)
             {
                 colli.enabled = true;
