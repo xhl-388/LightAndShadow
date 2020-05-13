@@ -16,6 +16,10 @@ public class SprayCube : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (this.enabled == false)
+        {
+            return;
+        }
         Collider2D collider = Physics2D.OverlapBox(new Vector2(transform.position.x, transform.position.y + 0.6f), new Vector2(0.9f,0.1f),0f, playerLayer);
         if (collider)
         {

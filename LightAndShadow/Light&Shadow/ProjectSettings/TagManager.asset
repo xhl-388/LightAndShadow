@@ -13,6 +13,8 @@ TagManager:
   - UI_Pausing
   - UI_Settings
   - UI_Play
+  - Mask
+  - BGM
   layers:
   - Default
   - TransparentFX

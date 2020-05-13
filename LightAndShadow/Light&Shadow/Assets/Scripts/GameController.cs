@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public interface ColoredCube        //方块通用接口
 {
     void ChangeColor();             //直接改变颜色 
@@ -56,8 +57,17 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
     public GameObject blackSquareOpp;
     public GameObject blackSquareRef;
     private LayerMask cubeLayer;
+    private GameObject mask;
+    private bool isAllSeen;
+    private Scrollbar scroBGM;
+    private AudioSource BGM;
     private void Start()
     {
+        if (GameObject.FindWithTag("BGM")!=null)
+        {
+            BGM = GameObject.FindWithTag("BGM").GetComponent<AudioSource>();
+        }
+        mask = GameObject.FindWithTag("Mask").transform.GetChild(0).gameObject;
         cubeLayer =1<< LayerMask.NameToLayer("Cube");
         timeNow = Time.time;
         cameraA = GameObject.Find("Camera_A");
@@ -72,6 +82,7 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
         whiteP = GameObject.FindWithTag("WhiteP");
         UI_pausing = GameObject.FindWithTag("UI_Pausing");
         UI_settings = GameObject.FindWithTag("UI_Settings");
+        scroBGM = UI_settings.transform.GetChild(7).gameObject.GetComponent<Scrollbar>();
         UI_play = GameObject.FindWithTag("UI_Play");
         partOfUI = UI_play.transform.GetChild(0).gameObject;
         UI_pausing.SetActive(false);
@@ -167,6 +178,10 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
     }
     private void Update()
     {
+        if (UI_settings.activeSelf&&BGM!=null)
+        {
+            BGM.volume = scroBGM.value;
+        }
         if (!hasSucceed)
         {
             if (blackIsOnPlace && whiteIsOnPlace)
@@ -191,6 +206,22 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
                     health_Black =Mathf.Clamp(health_Black + 2 * Time.deltaTime, 0f, 100f);
                     health_White = Mathf.Clamp(health_White + 2 * Time.deltaTime, 0f, 100f);
                 }
+                if (distance < 5)
+                {
+                    if (!isAllSeen)
+                    {
+                        isAllSeen = true;
+                        mask.transform.localScale = new Vector3(200, 200, 1);
+                    }
+                }
+                else
+                {
+                    if (isAllSeen)
+                    {
+                        isAllSeen = false;
+                        mask.transform.localScale = new Vector3(10, 10, 1);
+                    }
+                }
             }
             else
             {
@@ -204,6 +235,22 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
                 {
                     health_Black = Mathf.Clamp(health_Black + 2 * Time.deltaTime, 0f, 100f);
                     health_White = Mathf.Clamp(health_White + 2 * Time.deltaTime, 0f, 100f);
+                }
+                if (distance < 5)
+                {
+                    if (!isAllSeen)
+                    {
+                        isAllSeen = true;
+                        mask.transform.localScale = new Vector3(200, 200, 1);
+                    }
+                }
+                else
+                {
+                    if (isAllSeen)
+                    {
+                        isAllSeen = false;
+                        mask.transform.localScale = new Vector3(10, 10, 1);
+                    }
                 }
             }
         }
