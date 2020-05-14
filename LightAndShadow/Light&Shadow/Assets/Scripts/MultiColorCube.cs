@@ -70,14 +70,18 @@ public class MultiColorCube : MonoBehaviour
         if (greyCount >= 0.5f * countAll)
         {
             ChangeColor(0);
-            for (int i= 0; i < colliders.Length; i++){
-                if (colliders[i].gameObject.GetComponent<GreyCube>())
+            if (blackCount == whiteCount)
+            {
+                for (int i = 0; i < colliders.Length; i++)
                 {
-                    if (colliders[i].gameObject.GetComponent<SprayCube>())
+                    if (colliders[i].gameObject.GetComponent<GreyCube>())
                     {
-                        colliders[i].gameObject.GetComponent<SprayCube>().enabled = true;
+                        if (colliders[i].gameObject.GetComponent<SprayCube>())
+                        {
+                            colliders[i].gameObject.GetComponent<SprayCube>().enabled = true;
+                        }
+                        else colliders[i].gameObject.AddComponent<SprayCube>();
                     }
-                    else colliders[i].gameObject.AddComponent<SprayCube>();
                 }
             }
         }

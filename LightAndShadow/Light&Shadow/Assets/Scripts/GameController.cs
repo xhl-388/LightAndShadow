@@ -196,17 +196,21 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
             if (isLineReflect)
             {
                 float distance = new Vector2(blackP.transform.position.x + whiteP.transform.position.x - 2 * line, blackP.transform.position.y - whiteP.transform.position.y).magnitude;
-                if (distance> 5f||distance<1f)
+                if (distance> 5f)
                 {
-                    health_Black = Mathf.Clamp(health_Black - 1 * Time.deltaTime, 0f, 100f);
-                    health_White = Mathf.Clamp(health_White - 1 * Time.deltaTime, 0f, 100f);
+                    health_Black = Mathf.Clamp(health_Black - 10 * Time.deltaTime, 0f, 100f);
+                    health_White = Mathf.Clamp(health_White - 10 * Time.deltaTime, 0f, 100f);
                 }
                 else
                 {
-                    health_Black =Mathf.Clamp(health_Black + 2 * Time.deltaTime, 0f, 100f);
-                    health_White = Mathf.Clamp(health_White + 2 * Time.deltaTime, 0f, 100f);
+                    health_Black =Mathf.Clamp(health_Black + 20 * Time.deltaTime, 0f, 100f);
+                    health_White = Mathf.Clamp(health_White + 20 * Time.deltaTime, 0f, 100f);
                 }
-                if (distance < 5)
+                if (health_Black == 0f || health_White == 0f)
+                {
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                }
+                if (distance < 4)
                 {
                     if (!isAllSeen)
                     {
@@ -226,17 +230,21 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
             else
             {
                 float distance = new Vector2(blackP.transform.position.x + whiteP.transform.position.x - 2 * point.x, blackP.transform.position.y + whiteP.transform.position.y - 2 * point.y).magnitude;
-                if (distance> 5f||distance<1f)
+                if (distance> 5f)
                 {
-                    health_Black = Mathf.Clamp(health_Black - 1 * Time.deltaTime, 0f, 100f);
-                    health_White = Mathf.Clamp(health_White - 1 * Time.deltaTime, 0f, 100f);
+                    health_Black = Mathf.Clamp(health_Black - 10 * Time.deltaTime, 0f, 100f);
+                    health_White = Mathf.Clamp(health_White - 10 * Time.deltaTime, 0f, 100f);
                 }
                 else
                 {
-                    health_Black = Mathf.Clamp(health_Black + 2 * Time.deltaTime, 0f, 100f);
-                    health_White = Mathf.Clamp(health_White + 2 * Time.deltaTime, 0f, 100f);
+                    health_Black = Mathf.Clamp(health_Black + 20 * Time.deltaTime, 0f, 100f);
+                    health_White = Mathf.Clamp(health_White + 20 * Time.deltaTime, 0f, 100f);
                 }
-                if (distance < 5)
+                if (health_Black == 0f || health_White == 0f)
+                {
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                }
+                if (distance < 4)
                 {
                     if (!isAllSeen)
                     {
