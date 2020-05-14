@@ -495,7 +495,7 @@ MonoBehaviour:
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 263}
+    scrollPos: {x: 0, y: 279}
     m_SelectedIDs: 740a0000
     m_LastClickedID: 2676
     m_ExpandedIDs: 00000000ea090000340c0000380c0000520c0000060e000000ca9a3b
@@ -570,7 +570,7 @@ MonoBehaviour:
       m_IsRenaming: 0
       m_OriginalEventType: 11
       m_IsRenamingFilename: 1
-      m_ClientGUIView: {fileID: 11}
+      m_ClientGUIView: {fileID: 4}
     m_CreateAssetUtility:
       m_EndAction: {fileID: 0}
       m_InstanceID: 0
@@ -578,7 +578,7 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
     m_NewAssetIndexInList: -1
-    m_ScrollPosition: {x: 0, y: 36}
+    m_ScrollPosition: {x: 0, y: 0}
     m_GridSize: 87
   m_DirectoriesAreaWidth: 142
 --- !u!114 &15
@@ -612,9 +612,9 @@ MonoBehaviour:
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 2.0493364, y: -0.041043296, z: 2.210934}
+    m_Target: {x: 3.6733186, y: 1.96253, z: -10.203739}
     speed: 2
-    m_Value: {x: 2.0493364, y: -0.041043296, z: 2.210934}
+    m_Value: {x: 3.6733186, y: 1.96253, z: -10.203739}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -646,9 +646,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 12.05514
+    m_Target: 42.3181
     speed: 2
-    m_Value: 12.05514
+    m_Value: 42.3181
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -769,23 +769,23 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
-      m_LastClickedID: 0
-      m_ExpandedIDs: befbffff
+      m_SelectedIDs: f0300000
+      m_LastClickedID: 12528
+      m_ExpandedIDs: a8efffffc4f5ffffbefbffffe4300000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: Unseen
-        m_OriginalName: Unseen
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: -2232
+        m_UserData: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 2}
       m_SearchString: 

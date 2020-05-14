@@ -15,6 +15,7 @@ TagManager:
   - UI_Play
   - Mask
   - BGM
+  - UI_Begin
   layers:
   - Default
   - TransparentFX
