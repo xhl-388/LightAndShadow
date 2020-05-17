@@ -196,7 +196,7 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
             if (isLineReflect)
             {
                 float distance = new Vector2(blackP.transform.position.x + whiteP.transform.position.x - 2 * line, blackP.transform.position.y - whiteP.transform.position.y).magnitude;
-                if (distance> 5f)
+                if (distance> 4f)
                 {
                     health_Black = Mathf.Clamp(health_Black - 10 * Time.deltaTime, 0f, 100f);
                     health_White = Mathf.Clamp(health_White - 10 * Time.deltaTime, 0f, 100f);
@@ -230,7 +230,7 @@ public class GameController : MonoBehaviour     //游戏中的工具类脚本
             else
             {
                 float distance = new Vector2(blackP.transform.position.x + whiteP.transform.position.x - 2 * point.x, blackP.transform.position.y + whiteP.transform.position.y - 2 * point.y).magnitude;
-                if (distance> 5f)
+                if (distance> 4f)
                 {
                     health_Black = Mathf.Clamp(health_Black - 10 * Time.deltaTime, 0f, 100f);
                     health_White = Mathf.Clamp(health_White - 10 * Time.deltaTime, 0f, 100f);
